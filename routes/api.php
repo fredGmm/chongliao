@@ -17,6 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:api')->get('/user/update', 'UserController@update');
+
+
+
+
 Route::get("site/info", ['as'=>'site.option', 'uses' => 'SiteController@info']);
 
 

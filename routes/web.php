@@ -32,6 +32,16 @@ Route::post("group/create", ['uses' => 'GroupController@create']);
 Route::get("category/index", ['uses' => 'CategoryController@index']);
 Route::post("category/create", ['uses' => 'CategoryController@create']);
 
+//登陆注册用户
+Route::post("login/code", ['uses' => 'LoginController@code']);
 
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/profile', function() {
+   echo "profile";
+})->middleware('auth');

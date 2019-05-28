@@ -23,4 +23,16 @@ class Controller extends BaseController
         echo json_encode($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         exit;
     }
+
+    protected function jsonErr($code, $message = '', $data = [])
+    {
+        header('Content-Type:application/json;charset=UTF-8');
+        $return = [
+            'code' => $code,
+            'message' => $message,
+            'data' => $data,
+        ];
+        echo json_encode($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        exit;
+    }
 }

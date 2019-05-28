@@ -9,12 +9,13 @@ use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
-    public function index(){
-
+    public function index(Request $request){
+        $page =  $request->get('page', 1);
+        $pageSize = $request->get('pageSize', 20);
+        $offset = ($page - 1) * $pageSize;
         $column = ['id', 'name', 'avatar', 'cover', 'creator', 'type', 'created_at', 'updated_at'];
         $result = ImGroup::query()->where('is_deleted', 0)
-            ->limit(3)->offset(1)->get($column)->toArray();
-
+            ->offset($offset)->limit($pageSize)->get($column)->toArray();
         return $this->jsonOk($result);
     }
 
