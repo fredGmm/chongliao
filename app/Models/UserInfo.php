@@ -6,6 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * App\Models\UserInfo
+ *
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserInfo newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserInfo newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserInfo query()
+ * @mixin \Eloquent
+ */
 class UserInfo extends Authenticatable
 {
     use Notifiable;

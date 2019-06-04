@@ -36,6 +36,10 @@ Route::post("category/create", ['uses' => 'CategoryController@create']);
 Route::post("login/code", ['uses' => 'LoginController@code']);
 
 
+Route::get('message/autocreate', ['uses' => 'MessageController@autocreate']);
+Route::post('message/create', ['uses' => 'MessageController@create']);
+Route::post('message/groupCreate', ['uses' => 'MessageController@groupCreate']);
+
 
 
 Auth::routes();

@@ -6,29 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Validator;
 
-/**
- * App\Models\ImGroup
- *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ImGroup newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ImGroup newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ImGroup query()
- * @mixin \Eloquent
- */
-class ImGroup extends Model
+class ImMessage extends Model
 {
     use ValidatesRequests;
     //
-    protected $table = 'im_group';
+    protected $table = 'im_message';
 
     protected $rules = [
-        'name' => 'required|unique:im_group|max:50',
-        'avatar' => 'sometimes|required|image|max:500',
-        'cover' => 'sometimes|required|image|mimes:jpg,png,gif|max:500'
+//        'name' => 'required|unique:im_group|max:50',
+//        'avatar' => 'sometimes|required|image|max:500',
+//        'cover' => 'sometimes|required|image|mimes:jpg,png,gif|max:500'
     ];
     protected $message = [];
-    protected $fillable = ['name', 'avatar', 'cover', 'type'];
+    protected $fillable = ['relate_id', 'from_id', 'to_id', 'answer_id', 'content','status'];
 
     public $errors;
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+    }
 
     public function validate($data)
     {
@@ -44,5 +41,9 @@ class ImGroup extends Model
         return true;
     }
 
+    public function relateUser()
+    {
+        return $this->hasOne('\App\Models\UserInfo', 'id', 'to_id');
+    }
 
 }
