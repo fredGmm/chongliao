@@ -26,7 +26,8 @@ Route::get("site/test", ['as'=>'site.test', 'uses' => 'SiteController@test']);
 
 Route::get("group/index", ['as'=>'group.index', 'uses' => 'GroupController@index']);
 Route::post("group/create", ['uses' => 'GroupController@create']);
-
+Route::get('group/members', ['uses' => 'GroupController@members']);
+Route::post('group/join', ['uses' => 'GroupController@join']);
 
 // 分类
 Route::get("category/index", ['uses' => 'CategoryController@index']);
@@ -39,6 +40,7 @@ Route::post("login/code", ['uses' => 'LoginController@code']);
 Route::get('message/autocreate', ['uses' => 'MessageController@autocreate']);
 Route::post('message/create', ['uses' => 'MessageController@create']);
 Route::post('message/groupCreate', ['uses' => 'MessageController@groupCreate']);
+
 
 
 
