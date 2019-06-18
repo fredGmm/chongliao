@@ -21,6 +21,14 @@ Route::middleware('auth:api')->get('/user/update', 'UserController@update');
 
 
 Route::middleware('auth:api')->get('/message/dialog', 'MessageController@dialog');
+Route::middleware('auth:api')->get('/message/group', 'MessageController@group');
+
+
+Route::middleware('auth:api')->get('user/relation', ['uses' => 'UserController@relation']);
+Route::middleware('auth:api')->post('user/relation', ['uses' => 'UserController@relation']);
+
+
+
 
 
 

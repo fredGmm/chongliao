@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Validator;
 
-class ImGroupMessage extends Model
+class UserRelation extends Model
 {
     use ValidatesRequests;
 
-    protected $table = 'im_group_message';
+    protected $table = 'im_user_relation';
 
     protected $rules = [
 //        'name' => 'required|unique:im_group|max:50',
@@ -18,7 +18,6 @@ class ImGroupMessage extends Model
 //        'cover' => 'sometimes|required|image|mimes:jpg,png,gif|max:500'
     ];
     protected $message = [];
-    protected $fillable = ['relate_id', 'user_id', 'answer_id', 'content', 'status'];
 
     public $errors;
 
@@ -43,6 +42,6 @@ class ImGroupMessage extends Model
 
     public function relateUser()
     {
-        return $this->hasOne('\App\Models\UserInfo', 'id', 'user_id');
+        return $this->hasOne('\App\Models\UserInfo', 'id', 'rid');
     }
 }

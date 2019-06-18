@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Common;
 use App\Models\UserInfo;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
+    use AuthenticatesUsers;
     //
     const APP_ID = '';
     const APP_SECRET = '';
@@ -48,5 +50,30 @@ class LoginController extends Controller
             var_dump($status);
         }
         return $this->jsonOk(['user' => $userModel]);
+    }
+
+    /**
+     * Handle a login request to the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function web(Request $request){
+        $this->validateLogin($request);
+        if ($this->attemptLogin($request)) {
+            $request->session()->regenerate();
+
+            $this->clearLoginAttempts($request);
+
+            return $this->jsonOk(['userInfo' => $this->guard()->user()]);
+        }
+        // If the login attempt was unsuccessful we will increment the number of attempts
+        // to login and redirect the user back to the login form. Of course, when this
+        // user surpasses their maximum number of attempts they will get locked out.
+        $this->incrementLoginAttempts($request);
+
+        return $this->jsonErr(10001, '用户名或者密码错误!');
     }
 }

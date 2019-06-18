@@ -36,10 +36,13 @@ Route::post("category/create", ['uses' => 'CategoryController@create']);
 //登陆注册用户
 Route::post("login/code", ['uses' => 'LoginController@code']);
 
+Route::post("login/web", ['uses' => 'loginController@web']);
+
 
 Route::get('message/autocreate', ['uses' => 'MessageController@autocreate']);
 Route::post('message/create', ['uses' => 'MessageController@create']);
 Route::post('message/groupCreate', ['uses' => 'MessageController@groupCreate']);
+
 
 
 
@@ -51,3 +54,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile', function() {
    echo "profile";
 })->middleware('auth');
+
