@@ -29,9 +29,17 @@ Route::post("group/create", ['uses' => 'GroupController@create']);
 Route::get('group/members', ['uses' => 'GroupController@members']);
 Route::post('group/join', ['uses' => 'GroupController@join']);
 
+
 // 分类
 Route::get("category/index", ['uses' => 'CategoryController@index']);
 Route::post("category/create", ['uses' => 'CategoryController@create']);
+
+//图片管理
+Route::get('image/index', ['uses' => 'ImageController@index']);
+Route::post('image/create', ['uses' => 'ImageController@create']);
+Route::options('image/index',function () {
+    return "";
+});
 
 //登陆注册用户
 Route::post("login/code", ['uses' => 'LoginController@code']);

@@ -14,25 +14,24 @@ class Controller extends BaseController
 
     protected function jsonOk($data, $message = '')
     {
-        header('Content-Type:application/json;charset=UTF-8');
+//        header('Content-Type:application/json;charset=UTF-8');
         $return = [
             'code' => 0,
             'data' => $data,
             'message' => $message
         ];
         echo json_encode($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        exit;
     }
 
     protected function jsonErr($code, $message = '', $data = [])
     {
-        header('Content-Type:application/json;charset=UTF-8');
+//        header('Content-Type:application/json;charset=UTF-8');
         $return = [
             'code' => $code,
             'message' => $message,
             'data' => $data,
         ];
         echo json_encode($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        exit;
+//        exit;
     }
 }
