@@ -9,6 +9,7 @@ use App\Models\UserInfo;
 use GuzzleHttp\Client;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class SiteController extends Controller
 {
@@ -43,7 +44,7 @@ class SiteController extends Controller
 
     public function option()
     {
-        echo 142;exit;
+        echo date("H:i;s") . "hello world";exit;
     }
 
     public function test()

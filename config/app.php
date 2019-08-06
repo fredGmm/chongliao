@@ -52,9 +52,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://chongliao.j-book.cn/'),
 
-    'asset_url' => env('ASSET_URL', null),
+    'asset_url' => env('IMAGE_HOST', 'https://chongliao.j-book.cn/'),
 
     /*
     |--------------------------------------------------------------------------
@@ -174,7 +174,10 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Arcanedev\LogViewer\LogViewerServiceProvider::class
+        Arcanedev\LogViewer\LogViewerServiceProvider::class,
+
+        // ide 提示助手
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class
 
     ],
 

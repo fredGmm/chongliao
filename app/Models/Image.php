@@ -46,6 +46,6 @@ class Image extends Model
 
     public function getUrlAttribute()
     {
-        return 'http://chongliao.me/' . $this->path;
+        return  config('app.asset_url') . $this->path;
     }
 }
