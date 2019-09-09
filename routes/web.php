@@ -37,6 +37,7 @@ Route::post("category/create", ['uses' => 'CategoryController@create']);
 //图片管理
 Route::get('image/index', ['uses' => 'ImageController@index']);
 Route::post('image/create', ['uses' => 'ImageController@create']);
+Route::post('image/upload', ['uses' => 'ImageController@upload']);
 Route::options('image/index',function () {
     return "";
 });
@@ -51,7 +52,7 @@ Route::get('message/autocreate', ['uses' => 'MessageController@autocreate']);
 Route::post('message/create', ['uses' => 'MessageController@create']);
 Route::post('message/groupCreate', ['uses' => 'MessageController@groupCreate']);
 
-
+Route::get("user/onlineCount", ['uses' => 'UserController@onlineCount']);
 
 
 

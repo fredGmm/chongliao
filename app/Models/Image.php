@@ -46,6 +46,12 @@ class Image extends Model
 
     public function getUrlAttribute()
     {
-        return  config('app.asset_url') . $this->path;
+//        return  config('app.asset_url') . $this->path;
+        return  "https://chongliao.oss-cn-hangzhou.aliyuncs.com/" . $this->path;
+    }
+
+    public function getOssUrlAttribute()
+    {
+        return "https://chongliao.oss-cn-hangzhou.aliyuncs.com/" . $this->path;
     }
 }
