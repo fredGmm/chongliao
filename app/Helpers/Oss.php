@@ -23,7 +23,6 @@ class OSS {
     private $AccessKeySecret;
     private $ossClient;
 
-    const CL_WEB_BUCKET = 'chongliao';
     /**
      * 私有初始化 API，非 API，不用关注
      * @param boolean 是否使用内网
