@@ -58,11 +58,10 @@ class ImageController extends Controller
             $model->path = "";
             $model->is_deleted = 1;
             $model->save();
-
             $name = "chongliao-{$model->id}-{$title}"; // $file->getClientOriginalExtension()
             $path = "index/" . $name;
             try {
-                $result = OSS::privateUpload("chongliao", $path, './test.jpg',
+                $result = OSS::privateUpload("chongliao", $path, $file->path(),
                     ['ContentType' => $file->getMimeType()]);
                 if ($result) {
                     $model->is_deleted = 0;
