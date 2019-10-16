@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Psy\Util\Json;
 
 class Handler extends ExceptionHandler
 {
@@ -35,7 +36,14 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        parent::report($exception);
+        $return = [
+            'code' => 90000,
+            'message' => $exception->getMessage(),
+            'data' => [],
+        ];
+        echo Json::encode($return);
+        exit;
+//        parent::report($exception);
     }
 
     /**

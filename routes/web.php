@@ -44,8 +44,9 @@ Route::options('image/index',function () {
 
 //登陆注册用户
 Route::post("login/code", ['uses' => 'LoginController@code']);
-
 Route::post("login/web", ['uses' => 'loginController@web']);
+Route::post("register/web", ['uses' => 'userController@register']);
+
 
 
 Route::get('message/autocreate', ['uses' => 'MessageController@autocreate']);
@@ -55,6 +56,11 @@ Route::post('message/groupCreate', ['uses' => 'MessageController@groupCreate']);
 Route::get("user/onlineCount", ['uses' => 'UserController@onlineCount']);
 
 
+
+//product 产品死亡目录 API
+Route::get('product/test', ['uses' => 'Product\ProductController@test']);
+Route::post('product/create', ['uses' => 'Product\ProductController@create']);
+Route::get('product','Product\ProductController@list');
 
 Auth::routes();
 
