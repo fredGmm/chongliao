@@ -38,7 +38,7 @@ class Handler extends ExceptionHandler
     {
         $return = [
             'code' => 90000,
-            'message' => $exception->getMessage(),
+            'message' => "请求异常！",
             'data' => [],
         ];
         echo Json::encode($return);
