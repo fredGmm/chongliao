@@ -32,7 +32,7 @@ class ProductController extends Controller
         if($type) {
             $query->where('type', $type);
         }
-        $list = $query->offset($offset)->limit($pageSize)->orderBy('order', $desc)
+        $list = $query->offset($offset)->limit($pageSize)->orderBy($order, $desc)
             ->get();
         $count = $query->count();
 
