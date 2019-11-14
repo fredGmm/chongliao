@@ -34,8 +34,7 @@ class EnableCrossRequestMiddleware
             X-Requested-With, Content-Type, accept-language, accept-encoding, referer, user-agent, origin,Cookie, accept, connection, host');
             $response->header('Access-Control-Expose-Headers', 'Authorization, authenticated');
             $response->header('Access-Control-Allow-Methods', 'GET,POST,PUT,OPTIONS,PATCH,DELETE,HEAD');
-            $response->header('Content-Type', '*');
-            $response->header('charset', 'utf-8');
+            $response->header('Content-Type', 'application/json;charset=UTF-8');
             $response->header('Access-Control-Allow-Credentials', 'true');
         }
         return $response;
