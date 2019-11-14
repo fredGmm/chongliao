@@ -12,11 +12,11 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
-    protected function jsonOk($data, $message = '')
+    protected function jsonOk($data, $message = '', $code = 0)
     {
 //        header('Content-Type:application/json;charset=UTF-8');
         $return = [
-            'code' => 0,
+            'code' => $code,
             'data' => $data,
             'message' => $message
         ];

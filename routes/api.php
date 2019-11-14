@@ -24,13 +24,8 @@ Route::middleware('auth:api')->get('/message/dialog', 'MessageController@dialog'
 Route::middleware('auth:api')->get('/message/group', 'MessageController@group');
 
 
-Route::middleware('auth:api')->get('user/relation', ['uses' => 'UserController@relation']);
-Route::middleware('auth:api')->post('user/relation', ['uses' => 'UserController@relation']);
-
-
-
-
-
+Route::middleware('auth:api')->get('/user/relation', ['uses' => 'UserController@relation']);
+Route::middleware('auth:api')->get('/user/randomMatch', ['uses' => 'UserController@randomMatch']);
 
 
 Route::get("site/info", ['as'=>'site.option', 'uses' => 'SiteController@info']);
