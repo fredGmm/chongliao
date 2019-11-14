@@ -29,13 +29,18 @@ class EnableCrossRequestMiddleware
         ];
 //        $headers = 'X-Requested-With, Content-Type, ' . join(', ', array_keys($request->headers));
         if (in_array($origin, $allow_origin) || true) {
-            $response->header('Access-Control-Allow-Origin', $origin);
-            $response->header('Access-Control-Allow-Headers', 'Content-Type,XFILENAME,XFILECATEGORY,XFILESIZE,x-csrf-token,x-token,X-XSRF-TOKEN
-            X-Requested-With, Content-Type, accept-language, accept-encoding, referer, user-agent, origin,Cookie, accept, connection, host');
-            $response->header('Access-Control-Expose-Headers', 'Authorization, authenticated');
-            $response->header('Access-Control-Allow-Methods', 'GET,POST,PUT,OPTIONS,PATCH,DELETE,HEAD');
-            $response->header('Content-Type', 'application/json;charset=UTF-8');
-            $response->header('Access-Control-Allow-Credentials', 'true');
+            $response->headers->add(['Access-Control-Allow-Origin' => $origin]);
+            $response->headers->add(['Access-Control-Allow-Headers' => 'Origin, Content-Type, Cookie,X-CSRF-TOKEN,x-token, Accept,Authorization']);
+            $response->headers->add(['Access-Control-Expose-Headers' => 'Authorization,authenticated']);
+            $response->headers->add(['Access-Control-Allow-Methods' => 'GET, POST, PATCH, PUT, OPTIONS']);
+            $response->headers->add(['Access-Control-Allow-Credentials' => 'true']);
+//            $response->header('Access-Control-Allow-Origin', $origin);
+//            $response->header('Access-Control-Allow-Headers', 'Content-Type,XFILENAME,XFILECATEGORY,XFILESIZE,x-csrf-token,x-token,X-XSRF-TOKEN
+//            X-Requested-With, Content-Type, accept-language, accept-encoding, referer, user-agent, origin,Cookie, accept, connection, host');
+//            $response->header('Access-Control-Expose-Headers', 'Authorization, authenticated');
+//            $response->header('Access-Control-Allow-Methods', 'GET,POST,PUT,OPTIONS,PATCH,DELETE,HEAD');
+//            $response->header('Content-Type', 'application/json;charset=UTF-8');
+//            $response->header('Access-Control-Allow-Credentials', 'true');
         }
         return $response;
     }
