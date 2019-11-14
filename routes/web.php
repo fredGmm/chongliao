@@ -53,7 +53,7 @@ Route::get('message/autocreate', ['uses' => 'MessageController@autocreate']);
 Route::post('message/create', ['uses' => 'MessageController@create']);
 Route::post('message/groupCreate', ['uses' => 'MessageController@groupCreate']);
 
-Route::options('user/info',['uses' => 'UserController@options']);
+//Route::options('user/info',['uses' => 'UserController@options']);
 Route::get("user/onlineCount", ['uses' => 'UserController@onlineCount']);
 Route::post("user/login", ['uses' => 'UserController@login']);
 Route::get("user/info", ['uses' => 'UserController@info']);
