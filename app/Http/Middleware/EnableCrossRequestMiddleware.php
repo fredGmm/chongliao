@@ -29,7 +29,7 @@ class EnableCrossRequestMiddleware
         ];
 //        $headers = 'X-Requested-With, Content-Type, ' . join(', ', array_keys($request->headers));
         if (in_array($origin, $allow_origin) || true) {
-            $response->header('Access-Control-Allow-Origin', '*');
+            $response->header('Access-Control-Allow-Origin', $origin);
             $response->header('Access-Control-Allow-Headers', 'Content-Type,XFILENAME,XFILECATEGORY,XFILESIZE,x-csrf-token,x-token,X-XSRF-TOKEN
             X-Requested-With, Content-Type, accept-language, accept-encoding, referer, user-agent, origin,Cookie, accept, connection, host');
             $response->header('Access-Control-Expose-Headers', 'Authorization, authenticated');
