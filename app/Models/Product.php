@@ -14,7 +14,7 @@ class Product extends Model
 
     protected $rules = [
         'name' => 'required|unique:product|max:255',
-        'describe' => 'required|max:1000',
+        'summary' => 'required|max:1000',
         'type' => 'in:APP,WEB,SRV,HARDWARE',
         'company' => 'required|max:255',
         'birthday' => 'date',
@@ -23,14 +23,14 @@ class Product extends Model
     ];
     protected $message = [
         'name.unique' => '已存在该产品',
-        'describe.required' => '描述还是要来一波的',
+        'summary.required' => '简介还是要来一波的',
         'type.in' => '正确指定产品类型',
         'company.required' => '公司名必填;个人产品，请填写个体',
         'birthday.date' => '出生日期格式错误',
         'death_time' => '死亡日期格式错误'
     ];
 
-    protected $fillable = ['name', 'describe', 'type', 'company', 'birthday', 'death_time'];
+    protected $fillable = ['name', 'summary', 'type', 'company', 'birthday', 'death_time'];
 //    protected $appends = ['categoryName', 'url'];
 //    protected $hidden = ['path'];
 
@@ -48,5 +48,14 @@ class Product extends Model
             return false;
         }
         return true;
+    }
+
+    public function setPathAttribute()
+    {
+    }
+
+    public function relateDetail()
+    {
+        return $this->hasOne('\App\Models\ProductDetail', 'product_id', 'id');
     }
 }

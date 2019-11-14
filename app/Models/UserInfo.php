@@ -46,4 +46,17 @@ class UserInfo extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public static function getRandom($limit) {
+
+        $userModels = UserInfo::query()->where('is_deleted', 0)
+            ->orderByRaw('rand()')
+            ->limit($limit)
+            ->get(['id', 'name', 'avatar']);
+
+        return $userModels;
+
+    }
+
 }
