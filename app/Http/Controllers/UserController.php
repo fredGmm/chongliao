@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
 
-//    public function options()
-//    {
-//        return $this->jsonOk([]);
-//    }
+    public function options()
+    {
+        return $this->jsonOk([]);
+    }
     /**
      * Get a validator for an incoming registration request.
      *
