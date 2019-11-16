@@ -17,10 +17,11 @@ class UserController extends Controller
     {
         return $this->jsonOk([]);
     }
+
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -41,18 +42,18 @@ class UserController extends Controller
     {
         $user = $request->user();
         $userId = $user->id;
-        if($request->getMethod() == 'POST') {
+        if ($request->getMethod() == 'POST') {
             $model = new UserRelation();
             $model->uid = $userId;
             $model->rid = $request->post('rid');
             $model->type = 'single';
 
-            if($model->save()){
+            if ($model->save()) {
                 return $this->jsonOk($model, '发送成功！');
-            }else{
+            } else {
                 return $this->jsonOk([], '发送失败！');
             }
-        }else{
+        } else {
             $user = $request->user();
             $userId = $user->id;
 
@@ -71,20 +72,20 @@ class UserController extends Controller
             'name' => $data['name'],
             'email' => $data['email'] ?? '',
             'password' => Hash::make($data['password']),
-            'api_token' =>str_random(64)
+            'api_token' => str_random(64)
         ]);
     }
 
     /**
      * Handle a registration request for the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request)
     {
         $validator = $this->validator($request->all());
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return $this->jsonErr(10000, $validator->errors()->first());
         }
         $this->validator($request->all())->validate();
@@ -105,16 +106,17 @@ class UserController extends Controller
         }
     }
 
-    public function update(){
-
+    public function update()
+    {
     }
 
-    public function login(Request $request){
+    public function login(Request $request)
+    {
 
         $userName = $request->post('username', '');
         $password = $request->post('password', '');
 
-        if($userName == 'admin' && $password == '123456') {
+        if ($userName == 'admin' && $password == '123456') {
             $data = [
                 'avatar' => 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
                 'introduction' => 'I am a super administrator',
@@ -122,8 +124,8 @@ class UserController extends Controller
                 'roles' => ['product'],
                 'token' => 'aaaaaaa'
             ];
-            return $this->jsonOk($data,'', 0);
-        }else{
+            return $this->jsonOk($data, '', 0);
+        } else {
 
             return $this->jsonErr(90001, '90001:用户名或者密码错误');
         }
@@ -131,12 +133,12 @@ class UserController extends Controller
 
     public function info()
     {
-
         $data = ['token' => 'admin-token', 'avatar' => 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', 'roles' => ['product']];
-        return $this->jsonOk($data,'',0);
+        return $this->jsonOk($data, '', 0);
     }
 
-    public function onlineCount() {
+    public function onlineCount()
+    {
 
         var_dump(Auth::id());
         var_dump(Auth::check());
