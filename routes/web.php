@@ -44,19 +44,17 @@ Route::options('image/index',function () {
 
 //登陆注册用户
 Route::post("login/code", ['uses' => 'LoginController@code']);
-Route::post("login/web", ['uses' => 'loginController@web']);
-Route::post("user/register", ['uses' => 'userController@register']);
-
+Route::post("login/web", ['uses' => 'LoginController@web']);
 
 
 Route::get('message/autocreate', ['uses' => 'MessageController@autocreate']);
 Route::post('message/create', ['uses' => 'MessageController@create']);
 Route::post('message/groupCreate', ['uses' => 'MessageController@groupCreate']);
 
-//Route::options('user/login',['uses' => 'UserController@options']);
 Route::get("user/onlineCount", ['uses' => 'UserController@onlineCount']);
 Route::post("user/login", ['uses' => 'UserController@login']);
 Route::get("user/info", ['uses' => 'UserController@info']);
+Route::post("user/register", ['uses' => 'UserController@register']);
 
 
 
