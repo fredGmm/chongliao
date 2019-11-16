@@ -11,27 +11,25 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-
     protected function jsonOk($data, $message = '', $code = 0)
     {
-//        header('Content-Type:application/json;charset=UTF-8');
         $return = [
             'code' => $code,
             'data' => $data,
             'message' => $message
         ];
-        echo json_encode($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        return response()->json($return)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+//        echo json_encode($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 
     protected function jsonErr($code, $message = '', $data = [])
     {
-//        header('Content-Type:application/json;charset=UTF-8');
         $return = [
             'code' => $code,
             'message' => $message,
             'data' => $data,
         ];
-        echo json_encode($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-//        exit;
+        return response()->json($return)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 }
