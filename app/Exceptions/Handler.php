@@ -36,9 +36,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        $env = getenv('APP_ENV');
         $return = [
             'code' => 90000,
-            'message' => "请求异常！",
+            'message' => strrpos($env, "pro") === false ? $exception->getMessage() : "请求异常！" .$exception->getMessage(),
             'data' => [],
         ];
         echo Json::encode($return);
