@@ -7,6 +7,7 @@ use App\Models\UserInfo;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -61,19 +62,48 @@ class LoginController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
     public function web(Request $request){
-        $this->validateLogin($request);
+
+        if(!$this->validateLogin($request)) {
+            return $this->jsonErr(10001, '非法登录!');
+        }
+
         if ($this->attemptLogin($request)) {
             $request->session()->regenerate();
-
             $this->clearLoginAttempts($request);
-
             return $this->jsonOk(['userInfo' => $this->guard()->user()]);
         }
         // If the login attempt was unsuccessful we will increment the number of attempts
         // to login and redirect the user back to the login form. Of course, when this
         // user surpasses their maximum number of attempts they will get locked out.
         $this->incrementLoginAttempts($request);
-
         return $this->jsonErr(10001, '用户名或者密码错误!');
+    }
+
+    public function username()
+    {
+        return 'name';
+    }
+
+    /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    protected function validateLogin(Request $request)
+    {
+        $rules = [
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+            'email' => 'required|string|email'
+        ];
+        $message = [
+        ];
+
+        $v = Validator::make($request->all(),$rules);
+        if ($v->fails()) {
+            return false;
+        }
+        return true;
     }
 }
