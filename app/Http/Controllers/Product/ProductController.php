@@ -90,10 +90,13 @@ class ProductController extends Controller
 
         $detailModel = ProductDetail::query()->where('product_id', $id)
             ->first();
-        $detailModel->fill($request->all());
-        if (!$detailModel->save()) {
-            throw new \RuntimeException("更新失败");
+        if($detailModel) {
+            $detailModel->fill($request->all());
+            if (!$detailModel->save()) {
+                throw new \RuntimeException("更新失败");
+            }
         }
+
 
         return $this->jsonOk($model, '更新成功');
     }
