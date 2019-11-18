@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * Class ProductDetail
+ * @package App\Models
+ *
+ */
 class ProductDetail extends Model
 {
     use ValidatesRequests;
@@ -14,7 +19,7 @@ class ProductDetail extends Model
     protected $rules = [
         'product_id' => 'required|unique:product_detail',
 //        'introduction'=> 'digits_between:50,10000',
-        'web_addr'=> 'url'
+        'web_addr' => 'url'
     ];
 
     protected $message = [
@@ -23,11 +28,11 @@ class ProductDetail extends Model
         'web_addr.url' => '官网地址必须是个URL地址'
     ];
 
-    protected $fillable = ["product_id", "introdution", "logo","web_addr"];
+    protected $fillable = ["product_id", "stroy", "introdution", "creator_id", "logo", "web_addr"];
 
     protected $defaults = [
-        'introduction' => '说点神马吧！',
-        'logo'=>'',
+        'introduction' => '',
+        'logo' => '',
     ];
 
     public $errors;
@@ -41,7 +46,7 @@ class ProductDetail extends Model
     public function validate($data)
     {
         $v = Validator::make($data, $this->rules, $this->message);
-        if($v->fails()) {
+        if ($v->fails()) {
             $this->errors[] = $v->errors()->first();
             return false;
         }

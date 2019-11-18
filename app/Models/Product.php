@@ -30,7 +30,7 @@ class Product extends Model
         'death_time' => '死亡日期格式错误'
     ];
 
-    protected $fillable = ['name', 'summary', 'type', 'company', 'birthday', 'death_time'];
+    protected $fillable = ['name', 'summary', 'type', 'company', 'city', 'birthday', 'death_time', 'light_num'];
 //    protected $appends = ['categoryName', 'url'];
 //    protected $hidden = ['path'];
 

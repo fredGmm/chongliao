@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    //
+    //测试
     public function test()
     {
-        echo 'test';
+        echo 'hello world';
         exit;
     }
 
@@ -35,7 +35,7 @@ class ProductController extends Controller
         //筛选
         $type = $request->get('type', '');
         $query = Product::query()->where(['is_deleted' => 0]);
-        if($type) {
+        if ($type) {
             $query->where('type', $type);
         }
         $list = $query->offset($offset)->limit($pageSize)->orderBy(ltrim($order, '-'), $desc)
@@ -68,10 +68,10 @@ class ProductController extends Controller
             ->where('is_deleted', 0)
             ->with('relateDetail')
             ->first();
-        if($model == null) {
+        if ($model == null) {
             $message = "未找到此产品";
             return $this->jsonErr(80000, $message);
-        }else{
+        } else {
             return $this->jsonOk($model, '');
         }
     }
@@ -79,7 +79,7 @@ class ProductController extends Controller
     public function update(Request $request)
     {
         $id = $request->get('id');
-        $model = Product::query()->find($id);
+        $model = Product::query()->where('id', $id)->with('relateDetail')->first();
         if ($model == null) {
             return $this->jsonErr([], '未找到此产品，id:' . $id);
         }
@@ -87,18 +87,21 @@ class ProductController extends Controller
         if (!$model->save()) {
             throw new \RuntimeException("更新失败");
         }
+
+        $detailModel = ProductDetail::query()->where('product_id', $id)
+            ->first();
+        $detailModel->fill($request->all());
+        if (!$detailModel->save()) {
+            throw new \RuntimeException("更新失败");
+        }
+
         return $this->jsonOk($model, '更新成功');
     }
 
-    public function delete(){
+    public function delete()
+    {
 
     }
-
-
-
-
-
-
 
 
 }
