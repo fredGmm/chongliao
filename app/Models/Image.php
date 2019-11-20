@@ -25,11 +25,12 @@ class Image extends Model
     protected $table = 'image';
 
     protected $rules = [
-        'path' => 'required|image|max:500',
-        'title' => 'sometimes|max:255'
+        'path' => 'required|max:500',
+        'title' => 'required|max:255|unique:image',
+        'category_id' => 'max:4'
     ];
     protected $message = [];
-    protected $fillable = [];
+    protected $fillable = ['category_id', 'title', 'path'];
 
     protected $appends = ['categoryName', 'url'];
     protected $hidden = ['path'];
@@ -39,7 +40,7 @@ class Image extends Model
     public function validate($data)
     {
         // make a new validator object
-        $v = Validator::make($data, $this->rules, $this->message);
+        $v = Validator::make($data, $this->rules);
 
         // check for failure
         if ($v->fails()) {

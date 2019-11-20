@@ -6,6 +6,7 @@ use App\Helpers\OSS;
 use App\Models\Image;
 use App\Models\ImGroupMember;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ImageController extends Controller
 {
@@ -18,7 +19,7 @@ class ImageController extends Controller
         $pageSize = $request->get('pageSize', 9);
         $offset = ($page - 1) * $pageSize;
         /** @var Image $query */
-        $query = Image::query()->where('is_deleted', 0);
+        $query = Image::query()->where('is_deleted', 3);
 
         $images = $query->category($categoryId)->offset($offset)->limit($pageSize)
             ->orderBy('id', 'desc')->get();
@@ -30,21 +31,32 @@ class ImageController extends Controller
     public function create(Request $request)
     {
         $type = $request->get('prefix', 'chongliao');
+        $categoryId = $request->get('categoryId', '0');
         $files = $request->file();
         $data = [];
-
+        Log::info($files);
+        $prefix = $type;
+        $path = date('/Y/m/d/H');
         foreach ($files as $title => $file) {
-            $prefix = $type;
-            $path = date('/Y/m/d/H');
             $name = uniqid() . '.' . $file->getClientOriginalExtension();
             $fullPath = $file->storeAs($prefix . $path, $name);
-            $model = new Image();
-            $model->category_id = 0;
-            $model->title = $title;
-            $model->path = $fullPath;
-            $model->is_deleted = 0;
-            $model->save();
-            $data[] = $model;
+            $params = [
+                'category_id' => $categoryId,
+                'title' => $title,
+                'path' => $fullPath,
+                'is_deleted' => 0
+            ];
+            $model = new Image($params);
+            if($model->validate($params)) {
+                if(!$model->save()) {
+                    throw new \RuntimeException("保存插入失败");
+                }
+                $data[] = $model;
+            }else {
+                $message = $model->errors[0] ?? "未知错误";
+                Log::error($message);
+                return $this->jsonOk([], '加入失败！' . $message);
+            }
         }
         return $this->jsonOk($data, '添加成功');
     }
