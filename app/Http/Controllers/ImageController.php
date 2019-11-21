@@ -19,7 +19,7 @@ class ImageController extends Controller
         $pageSize = $request->get('pageSize', 9);
         $offset = ($page - 1) * $pageSize;
         /** @var Image $query */
-        $query = Image::query()->where('is_deleted', 3);
+        $query = Image::query()->where('is_deleted', 0);
 
         $images = $query->category($categoryId)->offset($offset)->limit($pageSize)
             ->orderBy('id', 'desc')->get();
@@ -31,7 +31,7 @@ class ImageController extends Controller
     public function create(Request $request)
     {
         $type = $request->get('prefix', 'chongliao');
-        $categoryId = $request->get('categoryId', '0');
+        $categoryId = $request->get('category_id', '0');
         $files = $request->file();
         $data = [];
         Log::info($files);
