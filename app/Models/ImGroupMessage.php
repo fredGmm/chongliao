@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Validator;
+use Nexmo\User\User;
 
 /**
  * This is the model class for table "template".
@@ -34,7 +35,10 @@ class ImGroupMessage extends Model
     protected $message = [];
     protected $fillable = ['relate_id', 'user_id', 'answer_id', 'content', 'status'];
     protected $appends = [
-        'time',
+        'time', 'text', 'avatar', 'name',
+    ];
+    protected $hidden = [
+        'content'
     ];
 
 
@@ -67,6 +71,23 @@ class ImGroupMessage extends Model
     public function getTimeAttribute()
     {
         return strtotime($this->attributes['updated_at']);
+    }
+
+    public function getTextAttribute()
+    {
+        return $this->attributes['content'];
+    }
+
+    public function getAvatarAttribute()
+    {
+        $user = $this->relateUser()->first();
+        return empty($user->avatar) ? UserInfo::DefaultAvatar : $user->avaytar;
+    }
+
+    public function getNameAttribute()
+    {
+        $user = $this->relateUser()->first();
+        return $user->name;
     }
 
 }

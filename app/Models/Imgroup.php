@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\ImageController;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Validator;
@@ -46,6 +47,11 @@ class ImGroup extends Model
         return true;
     }
 
+    public function relateImGroupMessage()
+    {
+        return $this->hasMany('\App\Models\ImGroupMessage', 'group_id', 'id');
+    }
+
     public function getTimeAttribute()
     {
         return strtotime($this->attributes['created_at']);
@@ -58,12 +64,22 @@ class ImGroup extends Model
 
     public function getUnreadAttribute()
     {
-        return 324;
+        $count = ImGroupMessage::query()->where('group_id', $this->id)
+            ->where('status', 0)
+            ->count();
+
+        return $count;
     }
 
     public function getMessageAttribute()
     {
-        return '最新一条消息的内容';
+        $model = ImGroupMessage::query()->where('group_id', $this->id)
+            ->where('status', 0)
+            ->orderBy('id', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get(['content'])
+            ->first();
+        return $model->content;
     }
 
 }
