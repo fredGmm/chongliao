@@ -5,19 +5,31 @@ namespace App\Http\Controllers;
 use App\Models\ImGroup;
 use App\Models\Category;
 use App\Models\ImGroupMember;
+use App\Models\UserInfo;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
-    public function index(Request $request){
-        $page =  $request->get('page', 1);
-        $pageSize = $request->get('pageSize', 20);
+    public function index(Request $request)
+    {
+        $page = $request->get('page', 1);
+        $pageSize = $request->get('pageSize', 6);
         $offset = ($page - 1) * $pageSize;
         $column = ['id', 'name', 'avatar', 'cover', 'creator', 'type', 'created_at', 'updated_at'];
-        $result = ImGroup::query()->where('is_deleted', 0)
-            ->offset($offset)->limit($pageSize)->get($column)->toArray();
-        return $this->jsonOk($result);
+        $groupList = ImGroup::query()->where('is_deleted', 0)
+            ->offset($offset)->limit(1)->get($column)->toArray();
+//        $privateList = [
+//            ['time' => time(), 'other_user_id' => 23,
+//                'avatar' => 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+//                'unread' => 2, 'message' => 'tttttttt'
+//            ],
+//        ];
+        $relateLite = [
+            'groupList' => $groupList,
+            'privateList' => [],
+        ];
+        return $this->jsonOk($relateLite);
     }
 
     public function create(Request $request)
@@ -25,22 +37,22 @@ class GroupController extends Controller
         $model = new ImGroup($request->all());
 
         if ($model->validate($request->all())) {
-            if($file = $request->file('avatar')) {
+            if ($file = $request->file('avatar')) {
                 $prefix = '/opt/data/chongliao/';
                 $path = 'group/avatar' . date('/Y/m/d/His/');
                 $name = $model->name . $file->getClientOriginalExtension();
                 $fullPath = $file->storeAs($prefix . $path . $name, $name);
-                if($fullPath){
+                if ($fullPath) {
                     $model->avatar = $path;
                 }
             }
 
-            if($file = $request->file('cover')) {
+            if ($file = $request->file('cover')) {
                 $prefix = '/opt/data/chongliao/';
                 $path = 'group/cover' . date('/Y/m/d/His/');
                 $name = $model->name . $file->getClientOriginalExtension();
                 $fullPath = $file->storeAs($prefix . $path . $name, $name);
-                if($fullPath){
+                if ($fullPath) {
                     $model->avatar = $path;
                 }
             }
@@ -63,7 +75,7 @@ class GroupController extends Controller
 
     public function delete()
     {
-        
+
     }
 
     public function members(Request $request)
@@ -92,4 +104,6 @@ class GroupController extends Controller
             return $this->jsonOk([], '加入失败！' . $message);
         }
     }
+
+
 }

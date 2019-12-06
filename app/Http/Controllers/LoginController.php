@@ -16,7 +16,8 @@ class LoginController extends Controller
     const APP_ID = '';
     const APP_SECRET = '';
 
-    public function code(Request $request){
+    public function code(Request $request)
+    {
 
 
         $url = 'https://api.weixin.qq.com/sns/jscode2session'; // code 换取 session_key 和 open_id
@@ -28,21 +29,21 @@ class LoginController extends Controller
         ];
 //        $result = Common::curl($url. '?' .  http_build_query($query),'GET', http_build_query($query));
         $result = [
-            'session_key' =>  'qi2Sc4vDbVvjs66UYKOQ5A==',
-            'openid' =>  'oXW8g5ZMAY3r38DnhEBQOnfMNB-c'
+            'session_key' => 'qi2Sc4vDbVvjs66UYKOQ5A==',
+            'openid' => 'oXW8g5ZMAY3r38DnhEBQOnfMNB-c'
         ];
         //是否遇到错误
-        if(isset($result['errcode']) && ($result['errcode'] != 0)) {
+        if (isset($result['errcode']) && ($result['errcode'] != 0)) {
 
             $this->jsonErr($result['errcode'], $result['message']);
         }
         $token = str_random(64);
         //存入用户
         $userModel = UserInfo::query()->where('openid', $result['openid'])->first();
-        if($userModel == null){
+        if ($userModel == null) {
             //创建并登陆
             $userModel = new UserInfo();
-            $userModel->name = $nickName ?? ('小萌新' . mt_rand(1000,2000));
+            $userModel->name = $nickName ?? ('小萌新' . mt_rand(1000, 2000));
             $userModel->password = Hash::make('chongliao');
             $userModel->api_token = $token;
             $userModel->openid = $result['openid'];
@@ -56,14 +57,15 @@ class LoginController extends Controller
     /**
      * Handle a login request to the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function web(Request $request){
+    public function web(Request $request)
+    {
 
-        if(!$this->validateLogin($request)) {
+        if (!$this->validateLogin($request)) {
             return $this->jsonErr(10001, '非法登录!');
         }
 
@@ -87,7 +89,7 @@ class LoginController extends Controller
     /**
      * Validate the user login request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return bool
      */
     protected function validateLogin(Request $request)
@@ -95,12 +97,12 @@ class LoginController extends Controller
         $rules = [
             $this->username() => 'required|string',
             'password' => 'required|string',
-            'email' => 'required|string|email'
+            'email' => 'sometimes|string|email'
         ];
         $message = [
         ];
 
-        $v = Validator::make($request->all(),$rules);
+        $v = Validator::make($request->all(), $rules);
         if ($v->fails()) {
             return false;
         }

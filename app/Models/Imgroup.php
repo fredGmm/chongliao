@@ -27,6 +27,8 @@ class ImGroup extends Model
     ];
     protected $message = [];
     protected $fillable = ['name', 'avatar', 'cover', 'type'];
+    protected $hidden = ['created_at', 'avatar', 'updated_at'];
+    protected $appends = ['time', 'groupAvatar', 'unread', 'message'];
 
     public $errors;
 
@@ -44,5 +46,24 @@ class ImGroup extends Model
         return true;
     }
 
+    public function getTimeAttribute()
+    {
+        return strtotime($this->attributes['created_at']);
+    }
+
+    public function getGroupAvatarAttribute()
+    {
+        return $this->attributes['avatar'];
+    }
+
+    public function getUnreadAttribute()
+    {
+        return 324;
+    }
+
+    public function getMessageAttribute()
+    {
+        return '最新一条消息的内容';
+    }
 
 }

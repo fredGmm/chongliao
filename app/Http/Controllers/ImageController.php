@@ -14,7 +14,7 @@ class ImageController extends Controller
     public function index(Request $request)
     {
         $categoryId = $request->get('category_id', 0);
-        // https://cswd.oss-cn-hangzhou.aliyuncs.com/recommend/Jyau6WKb5c498fa97d862.jpg
+
         $page = $request->get('page', 1);
         $pageSize = $request->get('pageSize', 9);
         $offset = ($page - 1) * $pageSize;
@@ -22,6 +22,7 @@ class ImageController extends Controller
         $query = Image::query()->where('is_deleted', 0);
 
         $images = $query->category($categoryId)->offset($offset)->limit($pageSize)
+//            ->orderBy('category_id', 'asc')
             ->orderBy('id', 'desc')->get();
 
         $count = $query->count();
@@ -47,12 +48,12 @@ class ImageController extends Controller
                 'is_deleted' => 0
             ];
             $model = new Image($params);
-            if($model->validate($params)) {
-                if(!$model->save()) {
+            if ($model->validate($params)) {
+                if (!$model->save()) {
                     throw new \RuntimeException("保存插入失败");
                 }
                 $data[] = $model;
-            }else {
+            } else {
                 $message = $model->errors[0] ?? "未知错误";
                 Log::error($message);
                 return $this->jsonOk([], '加入失败！' . $message);

@@ -19,12 +19,11 @@ Route::get('/', function () {
 //Route::get('/', ['as'=>'website.index','uses'=>'IndexController@index']);
 
 // 首页站点配置信息
-Route::get("site/option", ['as'=>'site.option', 'uses' => 'SiteController@option']);
-Route::get("site/test", ['as'=>'site.test', 'uses' => 'SiteController@test']);
+Route::get("site/option", ['as' => 'site.option', 'uses' => 'SiteController@option']);
+Route::get("site/test", ['as' => 'site.test', 'uses' => 'SiteController@test']);
 
 
-
-Route::get("group/index", ['as'=>'group.index', 'uses' => 'GroupController@index']);
+Route::get("group/index", ['as' => 'group.index', 'uses' => 'GroupController@index']);
 Route::post("group/create", ['uses' => 'GroupController@create']);
 Route::get('group/members', ['uses' => 'GroupController@members']);
 Route::post('group/join', ['uses' => 'GroupController@join']);
@@ -38,7 +37,7 @@ Route::post("category/create", ['uses' => 'CategoryController@create']);
 Route::get('image/index', ['uses' => 'ImageController@index']);
 Route::post('image/create', ['uses' => 'ImageController@create']);
 Route::post('image/upload', ['uses' => 'ImageController@upload']);
-Route::options('image/index',function () {
+Route::options('image/index', function () {
     return "";
 });
 
@@ -52,10 +51,9 @@ Route::post('message/create', ['uses' => 'MessageController@create']);
 Route::post('message/groupCreate', ['uses' => 'MessageController@groupCreate']);
 
 Route::get("user/onlineCount", ['uses' => 'UserController@onlineCount']);
-Route::post("user/login", ['uses' => 'UserController@login']);
+//Route::post("user/login", ['uses' => 'UserController@login']);
 Route::get("user/info", ['uses' => 'UserController@info']);
 Route::post("user/register", ['uses' => 'UserController@register']);
-
 
 
 //product 产品死亡目录 API
@@ -63,18 +61,18 @@ Route::options('product/create', 'Product\ProductController@options');
 Route::get('product/test', ['uses' => 'Product\ProductController@test']);
 Route::get('product', ['uses' => 'Product\ProductController@list']);
 Route::post('product/create', ['uses' => 'Product\ProductController@create']);
-Route::get('product/detail','Product\ProductController@detail');
+Route::get('product/detail', 'Product\ProductController@detail');
 Route::post('product/update', ['uses' => 'Product\ProductController@update']);
 
 
 Route::post('productDetail/create', ['uses' => 'Product\ProductDetailController@create']);
 
 
-Auth::routes();
+Auth::routes(); //vendor\laravel\framework\src\Illuminate\Routing\Router.php
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/profile', function() {
-   echo "profile";
+Route::get('/profile', function () {
+    echo "profile";
 })->middleware('auth');
 

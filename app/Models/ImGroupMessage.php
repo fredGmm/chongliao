@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Validator;
  * @property string $updated_at
  * @property string $created_at
  **/
-
 class ImGroupMessage extends Model
 {
     use ValidatesRequests;
@@ -34,6 +33,10 @@ class ImGroupMessage extends Model
     ];
     protected $message = [];
     protected $fillable = ['relate_id', 'user_id', 'answer_id', 'content', 'status'];
+    protected $appends = [
+        'time',
+    ];
+
 
     public $errors;
 
@@ -60,4 +63,10 @@ class ImGroupMessage extends Model
     {
         return $this->hasOne('\App\Models\UserInfo', 'id', 'user_id');
     }
+
+    public function getTimeAttribute()
+    {
+        return strtotime($this->attributes['updated_at']);
+    }
+
 }

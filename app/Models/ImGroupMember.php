@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 /**
  * App\Models\ImGroupMember
+ * @property $group_id int
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ImGroupMember newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ImGroupMember newQuery()
@@ -21,7 +23,8 @@ class ImGroupMember extends Model
     protected $table = 'im_group_member';
 
     protected $rules = [
-//        'name' => 'required|unique:im_group|max:50',
+        'group_id' => 'required|exists:im_group,id,is_deleted,0|unique:im_group_member,group_id,null,null,user_id,{$user_id}',
+        'user_id' => 'required|exists:user_info,id,is_deleted,0',
 //        'avatar' => 'sometimes|required|image|max:500',
 //        'cover' => 'sometimes|required|image|mimes:jpg,png,gif|max:500'
     ];
@@ -39,13 +42,25 @@ class ImGroupMember extends Model
     {
         // make a new validator object
         $v = Validator::make($data, $this->rules, $this->message);
-
         // check for failure
         if ($v->fails()) {
             // set errors and return false
             $this->errors[] = $v->errors()->first();
             return false;
         }
+        if ($this->isJoin($data['user_id'])) {
+            $this->errors[] = "你已经加入该群组";
+            return false;
+        }
         return true;
+    }
+
+    public function isJoin($user_id)
+    {
+        $exist = ImGroupMember::where('group_id', $this->group_id)
+            ->where('user_id', $user_id)
+            ->where('is_deleted', 0)
+            ->exists();
+        return $exist;
     }
 }

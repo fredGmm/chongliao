@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+    'env' => env('APP_ENV', 'dev'),
 
     /*
     |--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', false),
+    'debug' => env('APP_DEBUG', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -174,10 +174,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Arcanedev\LogViewer\LogViewerServiceProvider::class,
 
         // ide 提示助手
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class
+//        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class
 
     ],
 
