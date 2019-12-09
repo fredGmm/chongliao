@@ -35,25 +35,26 @@ class GroupController extends Controller
     public function create(Request $request)
     {
         $model = new ImGroup($request->all());
-
         if ($model->validate($request->all())) {
-            if ($file = $request->file('avatar')) {
-                $prefix = '/opt/data/chongliao/';
-                $path = 'group/avatar' . date('/Y/m/d/His/');
-                $name = $model->name . $file->getClientOriginalExtension();
-                $fullPath = $file->storeAs($prefix . $path . $name, $name);
+            $avatarFile = $request->file('avatar');
+            if ($avatarFile) {
+                $prefix = '/opt/data/chongliao';
+                $path = '/group/avatar' . date('/Y/m/d/His/');
+                $name = $model->name . $avatarFile->getClientOriginalExtension();
+                $fullPath = $avatarFile->storeAs($prefix . $path . $name, $name);
                 if ($fullPath) {
                     $model->avatar = $path;
                 }
             }
 
-            if ($file = $request->file('cover')) {
-                $prefix = '/opt/data/chongliao/';
-                $path = 'group/cover' . date('/Y/m/d/His/');
-                $name = $model->name . $file->getClientOriginalExtension();
-                $fullPath = $file->storeAs($prefix . $path . $name, $name);
+            $coverFile = $request->file('cover');
+            if ($coverFile) {
+                $prefix = '/opt/data/chongliao';
+                $path = '/group/cover' . date('/Y/m/d/His/');
+                $name = $model->name . $coverFile->getClientOriginalExtension();
+                $fullPath = $coverFile->storeAs($prefix . $path . $name, $name);
                 if ($fullPath) {
-                    $model->avatar = $path;
+                    $model->cover = $path;
                 }
             }
 

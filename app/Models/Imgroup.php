@@ -59,7 +59,7 @@ class ImGroup extends Model
 
     public function getGroupAvatarAttribute()
     {
-        return $this->attributes['avatar'];
+        return config('app.asset_url') . $this->attributes['avatar'];
     }
 
     public function getUnreadAttribute()
@@ -79,7 +79,7 @@ class ImGroup extends Model
             ->orderBy('created_at', 'desc')
             ->get(['content'])
             ->first();
-        return $model->content;
+        return $model->content ?? [];
     }
 
 }
