@@ -23,8 +23,8 @@ class ImGroup extends Model
 
     protected $rules = [
         'name' => 'required|unique:im_group|max:50',
-        'avatar' => 'sometimes|required|image|max:500',
-        'cover' => 'sometimes|required|image|mimes:jpg,png,gif|max:500'
+        'avatar' => 'sometimes|required|image',
+        'cover' => 'sometimes|required|image|mimes:jpg,png,gif'
     ];
     protected $message = [];
     protected $fillable = ['name', 'avatar', 'cover', 'type'];

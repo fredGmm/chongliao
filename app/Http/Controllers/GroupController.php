@@ -40,8 +40,8 @@ class GroupController extends Controller
             if ($avatarFile) {
                 $prefix = 'chongliao';
                 $path = '/group/avatar' . date('/Y/m/d/His');
-                $name = $model->name . $avatarFile->getClientOriginalExtension();
-                $fullPath = $avatarFile->storeAs($prefix . $path , $name);
+                $name = $model->name . '.' . $avatarFile->getClientOriginalExtension();
+                $fullPath = $avatarFile->storeAs($prefix . $path, $name);
                 if ($fullPath) {
                     $model->avatar = $fullPath;
                 }
@@ -51,7 +51,7 @@ class GroupController extends Controller
             if ($coverFile) {
                 $prefix = 'chongliao';
                 $path = '/group/cover' . date('/Y/m/d/His');
-                $name = $model->name . $coverFile->getClientOriginalExtension();
+                $name = $model->name . '.' . $coverFile->getClientOriginalExtension();
                 $fullPath = $coverFile->storeAs($prefix . $path . $name, $name);
                 if ($fullPath) {
                     $model->cover = $fullPath;
