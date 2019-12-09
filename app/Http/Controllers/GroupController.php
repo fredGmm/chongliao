@@ -38,23 +38,23 @@ class GroupController extends Controller
         if ($model->validate($request->all())) {
             $avatarFile = $request->file('avatar');
             if ($avatarFile) {
-                $prefix = '/opt/data/chongliao';
-                $path = '/group/avatar' . date('/Y/m/d/His/');
+                $prefix = 'chongliao';
+                $path = '/group/avatar' . date('/Y/m/d/His');
                 $name = $model->name . $avatarFile->getClientOriginalExtension();
-                $fullPath = $avatarFile->storeAs($prefix . $path . $name, $name);
+                $fullPath = $avatarFile->storeAs($prefix . $path , $name);
                 if ($fullPath) {
-                    $model->avatar = $path;
+                    $model->avatar = $fullPath;
                 }
             }
 
             $coverFile = $request->file('cover');
             if ($coverFile) {
-                $prefix = '/opt/data/chongliao';
-                $path = '/group/cover' . date('/Y/m/d/His/');
+                $prefix = 'chongliao';
+                $path = '/group/cover' . date('/Y/m/d/His');
                 $name = $model->name . $coverFile->getClientOriginalExtension();
                 $fullPath = $coverFile->storeAs($prefix . $path . $name, $name);
                 if ($fullPath) {
-                    $model->cover = $path;
+                    $model->cover = $fullPath;
                 }
             }
 
