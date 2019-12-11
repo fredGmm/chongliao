@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ImGroupMember;
 use App\Models\UserInfo;
 use App\Models\UserRelation;
 use Illuminate\Auth\Events\Registered;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Nexmo\User\User;
 
 class UserController extends Controller
 {
@@ -70,9 +72,15 @@ class UserController extends Controller
     {
         return UserInfo::create([
             'name' => $data['name'],
+            'nick_name' => $data['name'],
+            'avatar' => UserInfo::DefaultAvatar,
+            'gender' => 0,
             'email' => $data['email'] ?? '',
             'password' => Hash::make($data['password']),
-            'api_token' => str_random(64)
+            'api_token' => str_random(64),
+            'session_key' => '',
+            'openid' => '',
+            'union_id' => '',
         ]);
     }
 
@@ -90,6 +98,9 @@ class UserController extends Controller
         }
         $this->validator($request->all())->validate();
         event(new Registered($user = $this->create($request->all())));
+        $result = ImGroupMember::join(1, $user->id);
+
+        \Log::info($result);
         $this->guard()->login($user);
         return $this->jsonOk($user);
     }

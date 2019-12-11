@@ -10,6 +10,8 @@ use Illuminate\Validation\Rule;
 /**
  * App\Models\ImGroupMember
  * @property $group_id int
+ * @property $user_id int
+ * @property $is_deleted int
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ImGroupMember newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ImGroupMember newQuery()
@@ -48,19 +50,31 @@ class ImGroupMember extends Model
             $this->errors[] = $v->errors()->first();
             return false;
         }
-        if ($this->isJoin($data['user_id'])) {
+        if (ImGroupMember::isJoin($data['group_id'],$data['user_id'])) {
             $this->errors[] = "你已经加入该群组";
             return false;
         }
         return true;
     }
 
-    public function isJoin($user_id)
+    public static function isJoin($group_id,$user_id)
     {
-        $exist = ImGroupMember::where('group_id', $this->group_id)
+        $exist = ImGroupMember::where('group_id', $group_id)
             ->where('user_id', $user_id)
             ->where('is_deleted', 0)
             ->exists();
         return $exist;
+    }
+
+    public static function join($groupId, $userId) {
+
+        if(!ImGroupMember::isJoin($groupId,$userId)){
+            $model = new ImGroupMember();
+            $model->group_id = $groupId;
+            $model->user_id = $userId;
+            $model->is_deleted = 0;
+            return $model->save();
+        }
+        return true;
     }
 }

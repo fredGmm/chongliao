@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Http\Controllers\ImageController;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 /**
@@ -66,8 +67,8 @@ class ImGroup extends Model
     {
         $count = ImGroupMessage::query()->where('group_id', $this->id)
             ->where('status', 0)
+            ->where('is_deleted', 0)
             ->count();
-
         return $count;
     }
 
@@ -75,11 +76,15 @@ class ImGroup extends Model
     {
         $model = ImGroupMessage::query()->where('group_id', $this->id)
             ->where('status', 0)
+            ->where('is_deleted', 0)
             ->orderBy('id', 'desc')
             ->orderBy('created_at', 'desc')
             ->get(['content'])
             ->first();
-        return $model->content ?? [];
+        $user = Auth::user();
+        $isSendMsg = ImGroupMessage::query()->where('user_id',$user->id)
+            ->where('group_id', $this->id)->exists();
+        return empty($model->content) && empty($isSendMsg) ? '欢迎宠聊聊宠团！(￣▽￣)~*' :  $model->content;
     }
 
 }
