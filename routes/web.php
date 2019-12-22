@@ -55,6 +55,12 @@ Route::get("user/onlineCount", ['uses' => 'UserController@onlineCount']);
 Route::get("user/info", ['uses' => 'UserController@info']);
 Route::post("user/register", ['uses' => 'UserController@register']);
 
+//后台
+Route::get('admin/test', ['uses' => 'Admin\UserController@test']);
+Route::post('admin/login', ['uses' => 'Admin\UserController@login']);
+Route::get('admin/info', ['uses' => 'Admin\UserController@info']);
+
+
 
 //product 产品死亡目录 API
 Route::options('product/create', 'Product\ProductController@options');

@@ -121,26 +121,6 @@ class UserController extends Controller
     {
     }
 
-    public function login(Request $request)
-    {
-
-        $userName = $request->post('username', '');
-        $password = $request->post('password', '');
-
-        if ($userName == 'admin' && $password == '123456') {
-            $data = [
-                'avatar' => 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-                'introduction' => 'I am a super administrator',
-                'name' => 'Super Admin',
-                'roles' => ['product'],
-                'token' => 'aaaaaaa'
-            ];
-            return $this->jsonOk($data, '', 0);
-        } else {
-
-            return $this->jsonErr(90001, '90001:用户名或者密码错误');
-        }
-    }
 
     public function info()
     {
