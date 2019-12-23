@@ -53,6 +53,7 @@ Route::post('message/groupCreate', ['uses' => 'MessageController@groupCreate']);
 Route::get("user/onlineCount", ['uses' => 'UserController@onlineCount']);
 //Route::post("user/login", ['uses' => 'UserController@login']);
 Route::get("user/info", ['uses' => 'UserController@info']);
+Route::post("user/logout", ['uses' => 'UserController@logout']);
 Route::post("user/register", ['uses' => 'UserController@register']);
 
 //后台

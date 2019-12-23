@@ -122,10 +122,15 @@ class UserController extends Controller
     }
 
 
+    public function logout()
+    {
+        $this->guard()->logout();
+       return $this->jsonOk([]);
+    }
+
     public function info()
     {
-        $data = ['token' => 'admin-token', 'avatar' => 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', 'roles' => ['product']];
-        return $this->jsonOk($data, '', 0);
+
     }
 
     public function onlineCount()
