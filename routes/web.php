@@ -60,7 +60,10 @@ Route::get('admin/test', ['uses' => 'Admin\UserController@test']);
 Route::post('admin/login', ['uses' => 'Admin\UserController@login']);
 Route::get('admin/info', ['uses' => 'Admin\UserController@info']);
 
-
+//客户
+Route::get('customer', ['uses' => 'Admin\CustomerController@index']);
+Route::post('customer/create', ['uses' => 'Admin\CustomerController@create']);
+Route::post('customer/update', ['uses' => 'Admin\CustomerController@update']);
 
 //product 产品死亡目录 API
 Route::options('product/create', 'Product\ProductController@options');
