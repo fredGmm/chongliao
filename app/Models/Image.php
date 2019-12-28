@@ -14,6 +14,7 @@ use \Illuminate\Database\Eloquent\Builder;
  * @property string $title
  * @property string $path
  * @property integer $is_deleted
+ * @property integer $status
  * @property string $created_at
  * @property string $updated_at
  * @method Builder category($cid)
@@ -30,17 +31,17 @@ class Image extends Model
         'category_id' => 'max:4'
     ];
     protected $message = [];
-    protected $fillable = ['category_id', 'title', 'path'];
+    protected $fillable = ['category_id', 'title', 'path', 'status'];
 
-    protected $appends = ['categoryName', 'url'];
+    protected $appends = ['categoryName', 'url','statusText'];
     protected $hidden = ['path'];
 
     public $errors;
 
-    public function validate($data)
+    public function validate($data, $rules = [])
     {
         // make a new validator object
-        $v = Validator::make($data, $this->rules);
+        $v = Validator::make($data, $rules ?$rules : $this->rules);
 
         // check for failure
         if ($v->fails()) {
@@ -76,5 +77,15 @@ class Image extends Model
             $query->where('category_id', $categoryId);
         }
         return $query;
+    }
+
+    public function getStatusTextAttribute(){
+        $map = [
+            '0' => 'default',
+            '-1' => 'no',
+            '1' => 'yes'
+        ];
+
+        return $map[$this->status];
     }
 }

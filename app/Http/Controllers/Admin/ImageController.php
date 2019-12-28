@@ -1,59 +1,41 @@
 <?php
-
+/**
+ * Created by PhpStorm.
+ * User: fredgui
+ * Date: 2019/12/28
+ * Time: 11:37
+ */
 namespace App\Http\Controllers\Admin;
 
-use App\Helpers\OSS;
 use App\Http\Controllers\Controller;
-use App\Models\Customer;
 use App\Models\Image;
-use App\Models\ImGroupMember;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
-class CustomerController extends Controller
+class ImageController extends Controller
 {
 
     public function index(Request $request)
     {
         $categoryId = $request->get('category_id', 0);
-
+        $status = $request->get('status', 0);
         $page = $request->get('page', 1);
         $pageSize = $request->get('pageSize', 9);
         $offset = ($page - 1) * $pageSize;
-        /** @var Customer $query */
-        $query = Customer::query()->where('is_deleted', 0);
+        /** @var Image $query */
+        $query = Image::query()->where('is_deleted', 0)
+            ->where('status', $status);
 
-        $customers = $query->offset($offset)->limit($pageSize)
+        $images = $query->category($categoryId)->offset($offset)->limit($pageSize)
 //            ->orderBy('category_id', 'asc')
             ->orderBy('id', 'desc')->get();
 
         $count = $query->count();
-        return $this->jsonOk(['list' => $customers, 'total' => $count]);
-    }
-
-    public function create(Request $request)
-    {
-        $model = new Customer($request->all());
-        if ($model->validate($request->all())) {
-            if (!$model->save()) {
-                throw new \RuntimeException("保存插入失败");
-            }
-            $data[] = $model;
-        } else {
-            $message = $model->errors[0] ?? "未知错误";
-            return $this->jsonOk([], '加入失败！' . $message);
-        }
-
-        return $this->jsonOk($data, '添加成功');
-    }
-
-    public function import(Request $request) {
-
+        return $this->jsonOk(['list' => $images, 'count' => $count]);
     }
 
     public function update(Request $request) {
         $id = $request->get('id');
-        $model = Customer::query()->where('id', $id)->where('is_deleted', 0)
+        $model = Image::query()->where('id', $id)->where('status', 1)
             ->first();
 
         $model->fill($request->all());
@@ -71,6 +53,5 @@ class CustomerController extends Controller
             $message = $model->errors[0] ?? '未知错误';
             return $this->jsonOk([], '加入失败！' . $message);
         }
-
     }
 }

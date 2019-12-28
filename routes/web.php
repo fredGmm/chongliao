@@ -60,11 +60,13 @@ Route::post("user/register", ['uses' => 'UserController@register']);
 Route::get('admin/test', ['uses' => 'Admin\UserController@test']);
 Route::post('admin/login', ['uses' => 'Admin\UserController@login']);
 Route::get('admin/info', ['uses' => 'Admin\UserController@info']);
+Route::get('admin/image', ['uses' => 'Admin\ImageController@index']);
+Route::put('admin/image', ['uses' => 'Admin\ImageController@update']);
 
 //客户
 Route::get('customer', ['uses' => 'Admin\CustomerController@index']);
 Route::post('customer/create', ['uses' => 'Admin\CustomerController@create']);
-Route::post('customer/update', ['uses' => 'Admin\CustomerController@update']);
+Route::put('customer', ['uses' => 'Admin\CustomerController@update']);
 
 //product 产品死亡目录 API
 Route::options('product/create', 'Product\ProductController@options');

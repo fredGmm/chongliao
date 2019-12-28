@@ -19,7 +19,8 @@ class ImageController extends Controller
         $pageSize = $request->get('pageSize', 9);
         $offset = ($page - 1) * $pageSize;
         /** @var Image $query */
-        $query = Image::query()->where('is_deleted', 0);
+        $query = Image::query()->where('is_deleted', 0)
+            ->where('status', 1);
 
         $images = $query->category($categoryId)->offset($offset)->limit($pageSize)
 //            ->orderBy('category_id', 'asc')
@@ -29,6 +30,11 @@ class ImageController extends Controller
         return $this->jsonOk(['list' => $images, 'count' => $count]);
     }
 
+    /**
+     * 爬虫 得到的图上，通过这个接口入库
+     * @param Request $request
+     * @return $this
+     */
     public function create(Request $request)
     {
         $type = $request->get('prefix', 'chongliao');
