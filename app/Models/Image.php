@@ -31,7 +31,7 @@ class Image extends Model
         'category_id' => 'max:4'
     ];
     protected $message = [];
-    protected $fillable = ['category_id', 'title', 'path', 'status'];
+    protected $fillable = ['category_id', 'title', 'path', 'status', 'is_deleted'];
 
     protected $appends = ['categoryName', 'url','statusText'];
     protected $hidden = ['path'];

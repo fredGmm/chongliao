@@ -55,11 +55,15 @@ class CustomerController extends Controller
         $id = $request->get('id');
         $model = Customer::query()->where('id', $id)->where('is_deleted', 0)
             ->first();
+        if($model == null){
+           return $this->jsonErr(100008, '未找到此模型');
+        }
 
         $model->fill($request->all());
         $rule = [
             'status' => 'int|in:0,1,-1',
         ];
+
         if ($model->validate($request->all(), $rule)) {
             // 验证组是否存在
             $status = $model->save();

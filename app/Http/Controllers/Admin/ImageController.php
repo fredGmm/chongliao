@@ -24,19 +24,22 @@ class ImageController extends Controller
         /** @var Image $query */
         $query = Image::query()->where('is_deleted', 0)
             ->where('status', $status);
-
+        $count = $query->count();
         $images = $query->category($categoryId)->offset($offset)->limit($pageSize)
 //            ->orderBy('category_id', 'asc')
             ->orderBy('id', 'desc')->get();
 
-        $count = $query->count();
-        return $this->jsonOk(['list' => $images, 'count' => $count]);
+
+        return $this->jsonOk(['list' => $images, 'total' => $count]);
     }
 
     public function update(Request $request) {
         $id = $request->get('id');
-        $model = Image::query()->where('id', $id)->where('status', 1)
+        $model = Image::query()->where('id', $id)
             ->first();
+        if($model == null){
+            return $this->jsonErr([], '未找到此条目！');
+        }
 
         $model->fill($request->all());
         $rule = [

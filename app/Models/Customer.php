@@ -13,6 +13,7 @@ use \Illuminate\Database\Eloquent\Builder;
  * @property integer $id
  * @property string $name
  * @property string $phone
+ * @property int $status
  */
 class Customer extends Model
 {
@@ -27,15 +28,15 @@ class Customer extends Model
     protected $message = [];
     protected $fillable = ['name', 'phone', 'qq','weixin','height','birthday','gender','note','introduce'];
 
-    protected $appends = [];
+    protected $appends = ['statusText'];
     protected $hidden = [];
 
     public $errors;
 
-    public function validate($data)
+    public function validate($data, $rule = [])
     {
         // make a new validator object
-        $v = Validator::make($data, $this->rules);
+        $v = Validator::make($data, $rule ? $rule : $this->rules);
 
         // check for failure
         if ($v->fails()) {
@@ -44,5 +45,16 @@ class Customer extends Model
             return false;
         }
         return true;
+    }
+
+    public function getStatusTextAttribute()
+    {
+        $map = [
+            '0' => '未审核',
+            '1' => '可用',
+            '-1' => '不可用'
+        ];
+
+        return $map[$this->status] ?? '未知';
     }
 }
