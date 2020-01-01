@@ -26,7 +26,7 @@ class Customer extends Model
         'phone' => 'required|numeric|unique:customer',
     ];
     protected $message = [];
-    protected $fillable = ['name', 'phone', 'qq','weixin','height','birthday','gender','note','introduce'];
+    protected $fillable = ['name', 'phone', 'qq','weixin','is_deleted','height','birthday','gender','note','introduce'];
 
     protected $appends = ['statusText'];
     protected $hidden = [];
