@@ -85,7 +85,6 @@ class Image extends Model
             '-1' => 'no',
             '1' => 'yes'
         ];
-
-        return $map[$this->status];
+        return $map[$this->status] ?? 'default';
     }
 }
