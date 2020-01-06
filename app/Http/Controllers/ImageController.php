@@ -47,23 +47,23 @@ class ImageController extends Controller
         foreach ($files as $title => $file) {
             $name = uniqid() . '.' . $file->getClientOriginalExtension();
 //            $fullPath = $file->storeAs($prefix . $path, $name);
-            $params = [
-                'category_id' => $categoryId,
-                'title' => $title,
-                'path' => "dasd",
-                'is_deleted' => 0
-            ];
-            $model = new Image($params);
-            if ($model->validate($params)) {
-                if (!$model->save()) {
-                    throw new \RuntimeException("保存插入失败");
-                }
-                $data[] = $model;
-            } else {
-                $message = $model->errors[0] ?? "未知错误";
-                Log::error($message);
-                return $this->jsonOk([], '加入失败！' . $message);
-            }
+//            $params = [
+//                'category_id' => $categoryId,
+//                'title' => $title,
+//                'path' => "dasd",
+//                'is_deleted' => 0
+//            ];
+//            $model = new Image($params);
+//            if ($model->validate($params)) {
+//                if (!$model->save()) {
+//                    throw new \RuntimeException("保存插入失败");
+//                }
+//                $data[] = $model;
+//            } else {
+//                $message = $model->errors[0] ?? "未知错误";
+//                Log::error($message);
+//                return $this->jsonOk([], '加入失败！' . $message);
+//            }
         }
         return $this->jsonOk($data, '添加成功');
     }
