@@ -46,11 +46,11 @@ class ImageController extends Controller
         $path = date('/Y/m/d/H');
         foreach ($files as $title => $file) {
             $name = uniqid() . '.' . $file->getClientOriginalExtension();
-            $fullPath = $file->storeAs($prefix . $path, $name);
+//            $fullPath = $file->storeAs($prefix . $path, $name);
             $params = [
                 'category_id' => $categoryId,
                 'title' => $title,
-                'path' => $fullPath,
+                'path' => "dasd",
                 'is_deleted' => 0
             ];
             $model = new Image($params);
