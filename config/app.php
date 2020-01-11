@@ -55,6 +55,7 @@ return [
     'url' => env('APP_URL', 'https://chongliao.j-book.cn/'),
 
     'asset_url' => env('IMAGE_HOST', 'https://chongliao.j-book.cn/'),
+    'oss_asset_url' => env('OSS_HOST', 'http://hscd.oss-cn-hangzhou.aliyuncs.com/'),
 
     /*
     |--------------------------------------------------------------------------

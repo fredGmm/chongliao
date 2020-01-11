@@ -18,7 +18,7 @@ class GroupController extends Controller
         $offset = ($page - 1) * $pageSize;
         $column = ['id', 'name', 'avatar', 'cover', 'creator', 'type', 'created_at', 'updated_at'];
         $groupList = ImGroup::query()->where('is_deleted', 0)
-            ->offset($offset)->limit(1)->get($column)->toArray();
+            ->offset($offset)->limit($pageSize)->get($column)->toArray();
 //        $privateList = [
 //            ['time' => time(), 'other_user_id' => 23,
 //                'avatar' => 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',

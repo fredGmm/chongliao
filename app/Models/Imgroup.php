@@ -60,7 +60,7 @@ class ImGroup extends Model
 
     public function getGroupAvatarAttribute()
     {
-        return config('app.asset_url') . $this->attributes['avatar'];
+        return config('app.oss_asset_url') . $this->attributes['avatar'];
     }
 
     public function getUnreadAttribute()

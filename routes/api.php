@@ -20,6 +20,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->post('/user/login', 'UserController@login');
 Route::middleware('auth:api')->get('/user/update', 'UserController@update');
 
+//用户
+Route::middleware('auth:api')->get('/user', 'UserController@info');
+
 
 Route::middleware('auth:api')->middleware('cors')->get('/message/dialog', 'MessageController@dialog');
 Route::middleware('auth:api')->get('/message/group', 'MessageController@group');

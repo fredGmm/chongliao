@@ -93,6 +93,7 @@ class UserController extends Controller
     public function register(Request $request)
     {
         $validator = $this->validator($request->all());
+        \Log::info($request->all());
         if ($validator->fails()) {
             return $this->jsonErr(10000, $validator->errors()->first());
         }
@@ -128,9 +129,10 @@ class UserController extends Controller
        return $this->jsonOk([]);
     }
 
-    public function info()
+    public function info(Request $request)
     {
-
+        $user = $request->user();
+        return $this->jsonOk($user);
     }
 
     public function onlineCount()
