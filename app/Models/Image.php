@@ -28,10 +28,11 @@ class Image extends Model
     protected $rules = [
         'path' => 'required|max:500',
         'title' => 'required|max:255|unique:image',
-        'category_id' => 'max:4'
+        'category_id' => 'max:4',
+        'source_url' => 'sometimes'
     ];
     protected $message = [];
-    protected $fillable = ['category_id', 'title', 'path', 'status', 'is_deleted'];
+    protected $fillable = ['category_id', 'title', 'path', 'status', 'is_deleted', 'source_url'];
 
     protected $appends = ['categoryName', 'url','statusText'];
     protected $hidden = ['path'];

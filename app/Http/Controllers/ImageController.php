@@ -39,6 +39,7 @@ class ImageController extends Controller
     {
         $type = $request->get('prefix', 'chongliao');
         $categoryId = $request->get('category_id', '0');
+        $sourceUrl = $request->get('source_url', '');
         $files = $request->file();
         $data = [];
         Log::info($files);
@@ -51,7 +52,8 @@ class ImageController extends Controller
                 'category_id' => $categoryId,
                 'title' => $title,
                 'path' => $fullPath,
-                'is_deleted' => 0
+                'is_deleted' => 0,
+                'source_url' => $sourceUrl
             ];
             $model = new Image($params);
             if ($model->validate($params)) {
