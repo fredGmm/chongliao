@@ -50,7 +50,7 @@ class ImageController extends Controller
             $fullPath = $file->storeAs($prefix . $path, $name);
             $params = [
                 'category_id' => $categoryId,
-                'title' => $title,
+                'title' => $title . "-" . uniqid(),
                 'path' => $fullPath,
                 'is_deleted' => 0,
                 'source_url' => $sourceUrl
