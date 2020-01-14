@@ -39,18 +39,21 @@ class ImageController extends Controller
     {
         $type = $request->get('prefix', 'chongliao');
         $categoryId = $request->get('category_id', '0');
+        $related_id = $request->get('related_id', '0');
+        $title = $request->get('title', '');
         $sourceUrl = $request->get('source_url', '');
         $files = $request->file();
         $data = [];
         Log::info($files);
         $prefix = $type;
         $path = date('/Y/m/d/H');
-        foreach ($files as $title => $file) {
+        foreach ($files as $key => $file) {
             $name = uniqid() . '.' . $file->getClientOriginalExtension();
             $fullPath = $file->storeAs($prefix . $path, $name);
             $params = [
                 'category_id' => $categoryId,
-                'title' => $title . "-" . uniqid(),
+                'title' => $title ?: ($title . "-" . uniqid()),
+                'related_id' => $related_id,
                 'path' => $fullPath,
                 'is_deleted' => 0,
                 'source_url' => $sourceUrl

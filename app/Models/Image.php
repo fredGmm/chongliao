@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Validator;
 use \Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\Rule;
 
 /**
  * Class Image
@@ -27,12 +28,12 @@ class Image extends Model
 
     protected $rules = [
         'path' => 'required|max:500',
-        'title' => 'required|max:255|unique:image',
+        'title' => 'required|max:255',
         'category_id' => 'max:4',
-        'source_url' => 'sometimes'
+        'source_url' => 'sometimes',
     ];
     protected $message = [];
-    protected $fillable = ['category_id', 'title', 'path', 'status', 'is_deleted', 'source_url'];
+    protected $fillable = ['category_id', 'related_id','title', 'path', 'status', 'is_deleted', 'source_url'];
 
     protected $appends = ['categoryName', 'url','statusText'];
     protected $hidden = ['path'];
@@ -41,6 +42,9 @@ class Image extends Model
 
     public function validate($data, $rules = [])
     {
+        $this->rules['related_id'] =  Rule::unique('image')->where(function ($query) {
+            $query->where('related_id', '>', 0);
+        });
         // make a new validator object
         $v = Validator::make($data, $rules ?$rules : $this->rules);
 

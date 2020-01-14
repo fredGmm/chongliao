@@ -19,7 +19,7 @@ class ImageController extends Controller
         $categoryId = $request->get('category_id', 0);
         $status = $request->get('status', 0);
         $page = $request->get('page', 1);
-        $pageSize = $request->get('pageSize', 9);
+        $pageSize = $request->get('pageSize', 20);
         $offset = ($page - 1) * $pageSize;
         /** @var Image $query */
         $query = Image::query()->where('is_deleted', 0)

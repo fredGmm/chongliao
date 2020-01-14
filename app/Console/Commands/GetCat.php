@@ -16,7 +16,8 @@ class GetCat extends Command
      *
      * @var string
      */
-    protected $signature = 'get:cat 
+    protected $signature = 'get:cat
+                            {start=0 : 起始页} 
                             {pages=3 : 页数} {limit=20 : 大小} {--download}';
 
     /**
@@ -84,6 +85,7 @@ class GetCat extends Command
         $arguments = $this->arguments();
 
         $url = "https://api.thecatapi.com/v1/images/search?limit=%s&page=%s&order=Desc";
+        $start = $this->argument("start");
         $pages = $this->argument("pages");
         $limit = $this->argument("limit");
 
@@ -91,10 +93,10 @@ class GetCat extends Command
         $path = date('Y/m/d/H');
         $successCount = 0;
         $failCount = 0;
-        for($i=0;$i<$pages;$i++){
-            $api = sprintf($url,$limit, $i);
+        for ($i = 0; $i < $pages; $i++) {
+            $api = sprintf($url, $limit, (int)$start + $i);
             $items = Common::curl($api);
-            foreach ($items as $item){
+            foreach ($items as $item) {
                 $ext = pathinfo($item['url'], PATHINFO_EXTENSION);
                 $name = "cat-" . $item['id'] . "." . $ext;
                 $fullPath = $prefix . $path . "/" . $name;
@@ -122,6 +124,6 @@ class GetCat extends Command
             }
         }
 
-        echo sprintf("本次总共请求%d页，成功下载%d张图片,失败次数为%d" . PHP_EOL,$pages, $successCount, $failCount);
+        echo sprintf("本次总共请求%d页，成功下载%d张图片,失败次数为%d" . PHP_EOL, $pages, $successCount, $failCount);
     }
 }
