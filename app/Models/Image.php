@@ -42,9 +42,9 @@ class Image extends Model
 
     public function validate($data, $rules = [])
     {
-        $this->rules['related_id'] =  Rule::unique('image')->where(function ($query) {
-            $query->where('related_id', '>', 0);
-        });
+//        $this->rules['related_id'] =  Rule::unique('image')->where(function ($query) {
+//            $query->where('related_id', '>', 0);
+//        });
         // make a new validator object
         $v = Validator::make($data, $rules ?$rules : $this->rules);
 

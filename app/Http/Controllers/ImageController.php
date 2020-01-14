@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\OSS;
 use App\Models\Image;
+use App\Models\ImageOriginal;
 use App\Models\ImGroupMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -42,6 +43,8 @@ class ImageController extends Controller
         $related_id = $request->get('related_id', '0');
         $title = $request->get('title', '');
         $sourceUrl = $request->get('source_url', '');
+        $imageUrl = $request->get('image_url', '');
+        $source = $request->get('source', 'hupu');
         $files = $request->file();
         $data = [];
         Log::info($files);
@@ -52,23 +55,38 @@ class ImageController extends Controller
             $fullPath = $file->storeAs($prefix . $path, $name);
             $params = [
                 'category_id' => $categoryId,
-                'title' => $title ?: ( "hupu-" . $related_id),
+                'title' => $title ?: ($source . "-" . $related_id),
                 'related_id' => $related_id,
                 'path' => $fullPath,
                 'is_deleted' => 0,
                 'source_url' => $sourceUrl
             ];
-            $model = new Image($params);
-            if ($model->validate($params)) {
-                if (!$model->save()) {
-                    throw new \RuntimeException("保存插入失败");
+            $originalData = [
+                'url'=> $imageUrl,
+                'source' => $source,
+            ];
+            $originalModel = ImageOriginal::add($originalData);
+
+            if($originalModel) {
+                $model = new Image($params);
+                if ($model->validate($params)) {
+                    if (!$model->save()) {
+                        throw new \RuntimeException("保存插入失败");
+                    }
+                    $originalModel->is_deleted = 0;
+                    $originalModel->image_id = $model->id;
+                    $originalStatus = $originalModel->save();
+                    Log::info($originalStatus);
+                    $data[] = $model;
+                } else {
+                    $message = $model->errors[0] ?? "未知错误";
+                    Log::error($message);
+                    return $this->jsonOk([], '加入失败！' . $message);
                 }
-                $data[] = $model;
-            } else {
-                $message = $model->errors[0] ?? "未知错误";
-                Log::error($message);
-                return $this->jsonOk([], '加入失败！' . $message);
+            }else{
+                return $this->jsonErr(20001, "已存在");
             }
+
         }
         return $this->jsonOk($data, '添加成功');
     }
