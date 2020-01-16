@@ -35,6 +35,7 @@ Route::post("category/create", ['uses' => 'CategoryController@create']);
 
 //图片管理
 Route::get('image/index', ['uses' => 'ImageController@index']);
+Route::get('image/detail', ['uses' => 'ImageController@detail']);
 Route::post('image/create', ['uses' => 'ImageController@create']);
 Route::post('image/upload', ['uses' => 'ImageController@upload']);
 Route::options('image/index', function () {

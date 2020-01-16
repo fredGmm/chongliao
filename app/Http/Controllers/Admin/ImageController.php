@@ -51,6 +51,7 @@ class ImageController extends Controller
             if (!$status) {
                 throw new \RuntimeException("更新失败");
             }
+            $model->changeImagePath();
             return $this->jsonOk($model, '更新成功！');
         } else {
             $message = $model->errors[0] ?? '未知错误';

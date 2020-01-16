@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Helpers\OSS;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Validator;
 use \Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
+use Psy\Util\Json;
+use Seld\JsonLint\JsonParser;
 
 /**
  * Class Image
@@ -14,6 +17,7 @@ use Illuminate\Validation\Rule;
  * @property integer $category_id
  * @property string $title
  * @property string $path
+ * @property string $extra
  * @property integer $is_deleted
  * @property integer $status
  * @property string $created_at
@@ -33,9 +37,9 @@ class Image extends Model
         'source_url' => 'sometimes',
     ];
     protected $message = [];
-    protected $fillable = ['category_id', 'related_id','title', 'path', 'status', 'is_deleted', 'source_url'];
+    protected $fillable = ['category_id', 'related_id', 'title', 'path', 'status', 'is_deleted', 'source_url'];
 
-    protected $appends = ['categoryName', 'url','statusText'];
+    protected $appends = ['categoryName', 'url', 'statusText'];
     protected $hidden = ['path'];
 
     public $errors;
@@ -46,7 +50,7 @@ class Image extends Model
 //            $query->where('related_id', '>', 0);
 //        });
         // make a new validator object
-        $v = Validator::make($data, $rules ?$rules : $this->rules);
+        $v = Validator::make($data, $rules ? $rules : $this->rules);
 
         // check for failure
         if ($v->fails()) {
@@ -64,12 +68,14 @@ class Image extends Model
 
     public function getUrlAttribute()
     {
-        return config('app.asset_url') . $this->path;
+        $url = config('app.asset_url') . $this->path;
+        $ossUrl = "https://chongliao-oss.oss-cn-beijing.aliyuncs.com/" . $this->path;
+        return $this->status == 1 ? $ossUrl : $url;
     }
 
     public function getOssUrlAttribute()
     {
-        return "https://chongliao.oss-cn-hangzhou.aliyuncs.com/" . $this->path;
+        return "https://chongliao.oss-cn-beijing.aliyuncs.com/" . $this->path;
     }
 
     /**
@@ -77,19 +83,61 @@ class Image extends Model
      * @param $categoryId
      * @return mixed
      */
-    public function scopeCategory($query, $categoryId) {
-        if($categoryId) {
+    public function scopeCategory($query, $categoryId)
+    {
+        if ($categoryId) {
             $query->where('category_id', $categoryId);
         }
         return $query;
     }
 
-    public function getStatusTextAttribute(){
+    public function getStatusTextAttribute()
+    {
         $map = [
             '0' => 'default',
             '-1' => 'no',
             '1' => 'yes'
         ];
         return $map[$this->status] ?? 'default';
+    }
+
+    public function changeImagePath()
+    {
+        if ((int)$this->status == 1) {
+            $fullpath = storage_path("app/") . $this->path;
+            //上传到 oss
+            $name = "chongliao-{$this->id}"; // $file->getClientOriginalExtension()
+            $path = date('Y/m/d/') . $name . '.' . pathinfo($fullpath, PATHINFO_EXTENSION);
+
+            try {
+                $result = OSS::publicUpload("chongliao-oss", $path, $fullpath,
+                    ['ContentType' => $this->getMime()]);
+
+                if ($result) {
+                    $this->is_deleted = 0;
+                    $this->path = $path . "?x-oss-process=image/resize,m_fixed,h_160,w_160";
+                    if (!$this->save()) {
+                        \Log::error("上传图片至oss异常");
+                    }
+                }
+            } catch (\Exception $e) {
+                \Log::error("上传图片至oss异常:" . $e->getMessage());
+            }
+        }
+    }
+
+    public function getMime()
+    {
+        try {
+            if ($this->extra) {
+                $extraData = json_decode($this->extra, true);
+                if (!empty($extraData['mime'])) {
+                    return $extraData['mime'];
+                }
+            }
+        } catch (\Exception $e) {
+            \Log::error("获取mime错误:" . $e->getMessage());
+        }
+        return mime_content_type(storage_path("app/") . $this->path);
     }
 }

@@ -64,6 +64,7 @@ class ImageController extends Controller
             $originalData = [
                 'url'=> $imageUrl,
                 'source' => $source,
+                'local_path' => $fullPath
             ];
             $originalModel = ImageOriginal::add($originalData);
 
@@ -91,6 +92,11 @@ class ImageController extends Controller
         return $this->jsonOk($data, '添加成功');
     }
 
+    public function detail(Request $request){
+        $id = $request->get('id');
+        $model = Image::query()->where('id', $id)->first();
+        return $this->jsonOk($model);
+    }
     /**
      * 上传图片到 到 oss
      * @param Request $request

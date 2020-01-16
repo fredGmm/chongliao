@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Log;
  * @package App\Models
  * @property integer id
  * @property integer image_id
+ * @property string $url
+ * @property string $local_path
  * @property string source
  * @property integer $is_deleted
  * @property string extra
@@ -30,7 +32,7 @@ class ImageOriginal extends Model
         'url' => 'required|unique:image_original',
     ];
     protected $message = [];
-    protected $fillable = ['id', 'image_id', 'url', 'source', 'is_deleted', 'extra'];
+    protected $fillable = ['id', 'image_id', 'url', 'local_path', 'source', 'is_deleted', 'extra'];
 
     protected $appends = [];
     protected $hidden = [];
