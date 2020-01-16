@@ -110,12 +110,14 @@ class Image extends Model
             $path = date('Y/m/d/') . $name . '.' . pathinfo($fullpath, PATHINFO_EXTENSION);
 
             try {
-                $result = OSS::publicUpload("chongliao-oss", $path, $fullpath,
+                $result = OSS::privateUpload("chongliao-oss", $path, $fullpath,
                     ['ContentType' => $this->getMime()]);
 
                 if ($result) {
                     $this->is_deleted = 0;
-                    $this->path = $path . "?x-oss-process=image/resize,m_fixed,h_160,w_160";
+                    // ?x-oss-process=image/resize,m_lfit,h_160,w_160
+                    // ?x-oss-process=image/resize,m_fill,h_160,w_160
+                    $this->path = $path . "?x-oss-process=image/resize,m_fill,h_160,w_160";
                     if (!$this->save()) {
                         \Log::error("上传图片至oss异常");
                     }
