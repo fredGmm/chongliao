@@ -25,7 +25,10 @@ class ImageController extends Controller
 
         $images = $query->category($categoryId)->offset($offset)->limit($pageSize)
 //            ->orderBy('category_id', 'asc')
-            ->orderBy('id', 'desc')->get();
+            ->orderBy('updated_at', 'desc')
+            ->orderBy('id', 'desc')
+
+            ->get();
 
         $count = $query->count();
         return $this->jsonOk(['list' => $images, 'count' => $count]);
