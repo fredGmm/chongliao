@@ -39,7 +39,7 @@ class Image extends Model
     protected $message = [];
     protected $fillable = ['category_id', 'related_id', 'title', 'path', 'status', 'is_deleted', 'source_url'];
 
-    protected $appends = ['categoryName', 'url', 'statusText'];
+    protected $appends = ['categoryName', 'url', 'statusText', 'preUrl'];
     protected $hidden = ['path'];
 
     public $errors;
@@ -69,13 +69,15 @@ class Image extends Model
     public function getUrlAttribute()
     {
         $url = config('app.asset_url') . $this->path;
-        $ossUrl = "https://chongliao-oss.oss-cn-beijing.aliyuncs.com/" . $this->path;
+        $ossUrl = "https://chongliao-oss.oss-cn-beijing.aliyuncs.com/" . $this->path  . "?x-oss-process=image/resize,m_fill,h_160,w_160";
         return $this->status == 1 ? $ossUrl : $url;
     }
 
-    public function getOssUrlAttribute()
+    public function getPreUrlAttribute()
     {
-        return "https://chongliao.oss-cn-beijing.aliyuncs.com/" . $this->path;
+        $url = config('app.asset_url') . $this->path;
+        $ossUrl = "https://chongliao-oss.oss-cn-beijing.aliyuncs.com/" . $this->path ;
+        return $this->status == 1 ? $ossUrl : $url;
     }
 
     /**
@@ -117,7 +119,7 @@ class Image extends Model
                     $this->is_deleted = 0;
                     // ?x-oss-process=image/resize,m_lfit,h_160,w_160
                     // ?x-oss-process=image/resize,m_fill,h_160,w_160
-                    $this->path = $path . "?x-oss-process=image/resize,m_fill,h_160,w_160";
+                    $this->path = $path;
                     if (!$this->save()) {
                         \Log::error("上传图片至oss异常");
                     }

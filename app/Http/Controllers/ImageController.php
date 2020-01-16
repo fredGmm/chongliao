@@ -27,11 +27,10 @@ class ImageController extends Controller
 //            ->orderBy('category_id', 'asc')
             ->orderBy('updated_at', 'desc')
             ->orderBy('id', 'desc')
-
             ->get();
 
         $count = $query->count();
-        return $this->jsonOk(['list' => $images, 'count' => $count]);
+        return $this->jsonOk(['list' => $images, 'preImages' => array_column($images->toArray(), 'preUrl'), 'count' => $count]);
     }
 
     /**
