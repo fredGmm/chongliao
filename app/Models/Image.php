@@ -112,7 +112,7 @@ class Image extends Model
             $path = date('Y/m/d/') . $name . '.' . pathinfo($fullpath, PATHINFO_EXTENSION);
 
             try {
-                $result = OSS::privateUpload("chongliao-oss", $path, $fullpath,
+                $result = OSS::privateUpload("chongliao", $path, $fullpath,
                     ['ContentType' => $this->getMime()]);
 
                 if ($result) {
