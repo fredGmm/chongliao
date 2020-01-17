@@ -70,14 +70,14 @@ class Image extends Model
     public function getUrlAttribute()
     {
         $url = config('app.asset_url') . $this->path;
-        $ossUrl = "https://chongliao-oss.oss-cn-beijing.aliyuncs.com/" . $this->path . "?x-oss-process=image/resize,m_fill,h_160,w_160";
+        $ossUrl = "https://chong-pic.oss-cn-beijing.aliyuncs.com/" . $this->path . "?x-oss-process=image/resize,m_fill,h_160,w_160";
         return $this->status == 2 ? $ossUrl : $url;
     }
 
     public function getPreUrlAttribute()
     {
         $url = config('app.asset_url') . $this->path;
-        $ossUrl = "https://chongliao-oss.oss-cn-beijing.aliyuncs.com/" . $this->path;
+        $ossUrl = "https://chong-pic.oss-cn-beijing.aliyuncs.com/" . $this->path;
         return $this->status == 2 ? $ossUrl : $url;
     }
 
@@ -112,7 +112,7 @@ class Image extends Model
 //            $name = "chongliao-{$this->id}"; // $file->getClientOriginalExtension()
 //            $path = date('Y/m/d/H/') . $name . '.' . pathinfo($fullpath, PATHINFO_EXTENSION);
             try {
-                $result = OSS::publicUpload("chongliao", $this->path, $fullpath,
+                $result = OSS::publicUpload("chong-pic", $this->path, $fullpath,
                     ['ContentType' => $this->getMime()]);
 
                 if ($result) {

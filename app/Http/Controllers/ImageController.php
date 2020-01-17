@@ -21,7 +21,7 @@ class ImageController extends Controller
         $offset = ($page - 1) * $pageSize;
         /** @var Image $query */
         $query = Image::query()->where('is_deleted', 0)
-            ->where('status', 1);
+            ->where('status', '>', 0);
 
         $images = $query->category($categoryId)->offset($offset)->limit($pageSize)
 //            ->orderBy('category_id', 'asc')
