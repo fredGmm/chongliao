@@ -53,8 +53,8 @@ class ImageController extends Controller
         $prefix = $type;
         $path = date('/Y/m/d/H');
         foreach ($files as $key => $file) {
-            $name = uniqid() . '.' . $file->getClientOriginalExtension();
-            $fullPath = $file->storeAs($prefix . $path, $name);
+            $name = $related_id .'-'. uniqid() . '.' . $file->getClientOriginalExtension();
+            $fullPath = $file->storeAs($path, $name);
             $params = [
                 'category_id' => $categoryId,
                 'title' => $title ?: ($source . "-" . $related_id),

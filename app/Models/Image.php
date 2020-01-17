@@ -66,18 +66,19 @@ class Image extends Model
         return '';
     }
 
+    // 含有图片处理操作
     public function getUrlAttribute()
     {
         $url = config('app.asset_url') . $this->path;
-        $ossUrl = "https://chongliao-oss.oss-cn-beijing.aliyuncs.com/" . $this->path  . "?x-oss-process=image/resize,m_fill,h_160,w_160";
-        return $this->status == 1 ? $ossUrl : $url;
+        $ossUrl = "https://chongliao-oss.oss-cn-beijing.aliyuncs.com/" . $this->path . "?x-oss-process=image/resize,m_fill,h_160,w_160";
+        return $this->status == 2 ? $ossUrl : $url;
     }
 
     public function getPreUrlAttribute()
     {
         $url = config('app.asset_url') . $this->path;
-        $ossUrl = "https://chongliao-oss.oss-cn-beijing.aliyuncs.com/" . $this->path ;
-        return $this->status == 1 ? $ossUrl : $url;
+        $ossUrl = "https://chongliao-oss.oss-cn-beijing.aliyuncs.com/" . $this->path;
+        return $this->status == 2 ? $ossUrl : $url;
     }
 
     /**
@@ -108,18 +109,17 @@ class Image extends Model
         if ((int)$this->status == 1) {
             $fullpath = storage_path("app/") . $this->path;
             //上传到 oss
-            $name = "chongliao-{$this->id}"; // $file->getClientOriginalExtension()
-            $path = date('Y/m/d/') . $name . '.' . pathinfo($fullpath, PATHINFO_EXTENSION);
-
+//            $name = "chongliao-{$this->id}"; // $file->getClientOriginalExtension()
+//            $path = date('Y/m/d/H/') . $name . '.' . pathinfo($fullpath, PATHINFO_EXTENSION);
             try {
-                $result = OSS::privateUpload("chongliao", $path, $fullpath,
+                $result = OSS::publicUpload("chongliao", $this->path, $fullpath,
                     ['ContentType' => $this->getMime()]);
 
                 if ($result) {
                     $this->is_deleted = 0;
                     // ?x-oss-process=image/resize,m_lfit,h_160,w_160
                     // ?x-oss-process=image/resize,m_fill,h_160,w_160
-                    $this->path = $path;
+                    $this->status = 2;
                     if (!$this->save()) {
                         \Log::error("上传图片至oss异常");
                     }
