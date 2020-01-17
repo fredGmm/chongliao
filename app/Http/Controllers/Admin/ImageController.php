@@ -47,6 +47,7 @@ class ImageController extends Controller
         ];
         if ($model->validate($request->all(), $rule)) {
             // 验证组是否存在
+            $model->updated_at = date('Y-m-d H:i:s');
             $status = $model->save();
             if (!$status) {
                 throw new \RuntimeException("更新失败");
