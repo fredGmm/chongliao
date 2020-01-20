@@ -112,7 +112,7 @@ class Image extends Model
 //            $name = "chongliao-{$this->id}"; // $file->getClientOriginalExtension()
 //            $path = date('Y/m/d/H/') . $name . '.' . pathinfo($fullpath, PATHINFO_EXTENSION);
             try {
-                $result = OSS::publicUpload("chong-pic", $this->path, $fullpath,
+                $result = OSS::privateUpload("chong-pic", $this->path, $fullpath,
                     ['ContentType' => $this->getMime()]);
 
                 if ($result) {
