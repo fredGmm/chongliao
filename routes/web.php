@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return "hello,chongliao!";
+    return "hello,chongliao!" .  md5('daoneng123456');;
 });
 
 
@@ -88,4 +88,20 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile', function () {
     echo "profile";
 })->middleware('auth');
+
+
+//道能
+Route::get('dn/activity', ['uses' => 'Dn\DnController@activity_list']);
+Route::get('dn/article', ['uses' => 'Dn\DnController@article_list']);
+
+Route::post('dn/article_create', ['uses' => 'Dn\DnController@article_create']);
+Route::get('dn/article_detail', 'Dn\DnController@article_detail');
+Route::post('dn/article_update', ['uses' => 'Dn\DnController@article_update']);
+
+Route::get('dn/user', ['uses' => 'Dn\DnController@user_list']);
+Route::post('dn/user_create', ['uses' => 'Dn\DnController@user_create']);
+Route::get('dn/user_detail', 'Dn\DnController@user_detail');
+Route::put('dn/user_update', ['uses' => 'Dn\DnController@user_update']);
+
+Route::get('dn/user_community', ['uses' => 'Dn\DnController@community_list']);
 

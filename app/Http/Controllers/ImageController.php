@@ -51,7 +51,7 @@ class ImageController extends Controller
         $data = [];
         Log::info($files);
         $prefix = $type;
-        $path = date('/Y/m/d/H');
+        $path = "/{$prefix}" . date('/Y/m/d/H');
         foreach ($files as $key => $file) {
             $name = $related_id .'-'. uniqid() . '.' . $file->getClientOriginalExtension();
             $fullPath = $file->storeAs($path, $name);

@@ -86,22 +86,24 @@ class SaveMessage extends Command
         while (true) {
             $data = json_decode($redis->rpop("GROUP_MESSAGE_1"), true);
             if($data) {
-                $this->info("存入消息");
-                var_dump($data);
-                $model = new ImGroupMessage();
-                $model->group_id = $data["group_id"];
-                $model->user_id = (int)$data['user_id'] ?? 0;
-                $model->content = $data['message'];
-                $model->type = "group";
-                $model->status = 1;
-                $model->is_deleted = 0;
-                if($model->save()) {
-                    $this->info($model->id . PHP_EOL);
-                }else{
-                    var_dump($model->errors);
+                try {
+                    $this->info("存入消息");
+                    var_dump($data);
+                    $model = new ImGroupMessage();
+                    $model->group_id = $data["group_id"];
+                    $model->user_id = $data['user_id'] ?? 0;
+                    $model->content = $data['message'];
+                    $model->type = "group";
+                    $model->status = 1;
+                    $model->is_deleted = 0;
+                    if($model->save()) {
+                        $this->info($model->id . PHP_EOL);
+                    }else{
+                        var_dump($model->errors);
+                    }
+                }catch (\RuntimeException $e) {
+                    echo $e->getMessage();
                 }
-
-
 
             }
         }

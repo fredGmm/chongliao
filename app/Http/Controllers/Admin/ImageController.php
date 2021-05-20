@@ -17,13 +17,20 @@ class ImageController extends Controller
     public function index(Request $request)
     {
         $categoryId = $request->get('category_id', 0);
-        $status = $request->get('status', 0);
+//        $status = $request->get('status', 0);
         $page = $request->get('page', 1);
         $pageSize = $request->get('pageSize', 20);
         $offset = ($page - 1) * $pageSize;
+
         /** @var Image $query */
         $query = Image::query()->where('is_deleted', 0)
-            ->where('status', $status);
+            ->where('status', '0');
+//            ->where(function ($query) use ($status) {
+//                if($status != null) {
+//                    $query->where('status', '>',$status);
+//                }
+//            });
+
         $count = $query->count();
         $images = $query->category($categoryId)->offset($offset)->limit($pageSize)
 //            ->orderBy('category_id', 'asc')

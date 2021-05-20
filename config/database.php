@@ -42,7 +42,7 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '192.168.0.66'),
+            'host' => env('DB_HOST', '192.168.0.44'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'chongliao'),
             'username' => env('DB_USERNAME', 'root'),
@@ -50,6 +50,22 @@ return [
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_general_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+        ],
+
+        'mysql_dn' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST_DN', '192.168.0.44'),
+            'port' => env('DB_PORT_DN', '3306'),
+            'database' => env('DB_DATABASE_DN', 'daoneng'),
+            'username' => env('DB_USERNAME_DN', 'root'),
+            'password' => env('DB_PASSWORD_DN', 'xiaoming'),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_bin',
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
@@ -113,15 +129,15 @@ return [
         'client' => 'predis',
 
         'default' => [
-            'host' => env('REDIS_HOST', '127.0.0.1'),
-            'password' => env('REDIS_PASSWORD', null),
-            'port' => env('REDIS_PORT', 6379),
-            'database' => env('REDIS_DB', 0),
+            'host' => "192.168.0.7",
+            'password' => "123456",
+            'port' => 6379,
+            'database' => 0,
         ],
 
         'cache' => [
-            'host' => env('REDIS_HOST', '127.0.0.1'),
-            'password' => env('REDIS_PASSWORD', null),
+            'host' => "192.168.0.7",
+            'password' => env('REDIS_PASSWORD', "123456"),
             'port' => env('REDIS_PORT', 6379),
             'database' => env('REDIS_CACHE_DB', 1),
         ],
