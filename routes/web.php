@@ -63,6 +63,8 @@ Route::post('admin/login', ['uses' => 'Admin\UserController@login']);
 Route::get('admin/info', ['uses' => 'Admin\UserController@info']);
 Route::get('admin/image', ['uses' => 'Admin\ImageController@index']);
 Route::put('admin/image', ['uses' => 'Admin\ImageController@update']);
+Route::post('admin/image', ['uses' => 'Admin\ImageController@create']);
+Route::options('admin/image', 'Admin\ImageController@options');
 
 //客户
 Route::get('customer', ['uses' => 'Admin\CustomerController@index']);
@@ -105,3 +107,21 @@ Route::put('dn/user_update', ['uses' => 'Dn\DnController@user_update']);
 
 Route::get('dn/user_community', ['uses' => 'Dn\DnController@community_list']);
 
+
+Route::get('dn/banner_detail', 'Dn\DnController@banner_detail');
+Route::get('dn/banner_list', ['uses' => 'Dn\DnController@banner_list']);
+Route::post('dn/banner_update', ['uses' => 'Dn\DnController@banner_update']);
+Route::post('dn/banner_create', ['uses' => 'Dn\DnController@banner_create']);
+
+Route::get('dn/clock_main_class', ['uses' => 'Dn\DnController@clock_main_class']);
+Route::get('dn/clock_main_class_detail', 'Dn\DnController@clock_main_class_detail');
+Route::post('dn/clock_main_class_update', ['uses' => 'Dn\DnController@clock_main_class_update']);
+Route::post('dn/clock_main_class_create', ['uses' => 'Dn\DnController@clock_main_class_create']);
+
+
+Route::get('dn/clock_class', ['uses' => 'Dn\DnController@clock_class']);
+Route::get('dn/clock_main_class_detail', 'Dn\DnController@clock_main_class_detail');
+Route::post('dn/clock_class_update', ['uses' => 'Dn\DnController@clock_class_update']);
+Route::post('dn/clock_class_create', ['uses' => 'Dn\DnController@clock_class_create']);
+
+Route::get('dn/clock_records', ['uses' => 'Dn\DnController@clock_records']);

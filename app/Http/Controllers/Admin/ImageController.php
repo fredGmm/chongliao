@@ -13,7 +13,10 @@ use Illuminate\Http\Request;
 
 class ImageController extends Controller
 {
-
+    public function options()
+    {
+        return $this->jsonOk([]);
+    }
     public function index(Request $request)
     {
         $categoryId = $request->get('category_id', 0);
@@ -65,5 +68,23 @@ class ImageController extends Controller
             $message = $model->errors[0] ?? '未知错误';
             return $this->jsonOk([], '加入失败！' . $message);
         }
+    }
+
+
+    public function create(Request $request)
+    {
+
+        $files = $request->file();
+        $data = [];
+        \Log::info($files);
+        $prefix = "dn";
+        $path = "/{$prefix}" . date('/Y/m/d/H');
+        foreach ($files as $key => $file) {
+            $name = uniqid() . '.' . $file->getClientOriginalExtension();
+            $fullPath = $file->storeAs($path, $name);
+            copy(storage_path('app').'/'.$fullPath.'/'.$name,"/tmp/{$name}");
+            return $this->jsonOk($name, '添加成功');
+        }
+        return $this->jsonOk($data, '添加成功');
     }
 }
