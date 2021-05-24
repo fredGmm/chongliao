@@ -274,7 +274,7 @@ class DnController extends Controller
         $model = new DnBanner($request->all());
 
         if ($model->validate($request->all())){
-            $model->photo = $request->imageUrl;
+            $model->photo = config('app.asset_url') .'/static/' .$request->imageUrl;
             if (!$model->save()) {
                 throw new \RuntimeException("插入失败");
             }

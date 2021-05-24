@@ -82,7 +82,7 @@ class ImageController extends Controller
         foreach ($files as $key => $file) {
             $name = uniqid() . '.' . $file->getClientOriginalExtension();
             $fullPath = $file->storeAs($path, $name);
-            copy(storage_path('app').'/'.$fullPath.'/'.$name,"/tmp/{$name}");
+            move_uploaded_file(storage_path('app').'/'.$fullPath.'/'.$name,"/data/html/static/{$name}");
             return $this->jsonOk($name, '添加成功');
         }
         return $this->jsonOk($data, '添加成功');
