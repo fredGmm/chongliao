@@ -94,34 +94,41 @@ Route::get('/profile', function () {
 
 //道能
 Route::get('dn/activity', ['uses' => 'Dn\DnController@activity_list']);
-Route::get('dn/article', ['uses' => 'Dn\DnController@article_list']);
+Route::post('dn/activity_delete', ['uses' => 'Dn\DnController@activity_delete']);
 
+Route::get('dn/article', ['uses' => 'Dn\DnController@article_list']);
+Route::post('dn/article_delete', ['uses' => 'Dn\DnController@article_delete']);
 Route::post('dn/article_create', ['uses' => 'Dn\DnController@article_create']);
 Route::get('dn/article_detail', 'Dn\DnController@article_detail');
 Route::post('dn/article_update', ['uses' => 'Dn\DnController@article_update']);
 
 Route::get('dn/user', ['uses' => 'Dn\DnController@user_list']);
 Route::post('dn/user_create', ['uses' => 'Dn\DnController@user_create']);
+Route::post('dn/user_delete', ['uses' => 'Dn\DnController@user_delete']);
 Route::get('dn/user_detail', 'Dn\DnController@user_detail');
 Route::put('dn/user_update', ['uses' => 'Dn\DnController@user_update']);
 
 Route::get('dn/user_community', ['uses' => 'Dn\DnController@community_list']);
+Route::post('dn/user_community_delete', ['uses' => 'Dn\DnController@community_delete']);
 
 
 Route::get('dn/banner_detail', 'Dn\DnController@banner_detail');
 Route::get('dn/banner_list', ['uses' => 'Dn\DnController@banner_list']);
 Route::post('dn/banner_update', ['uses' => 'Dn\DnController@banner_update']);
 Route::post('dn/banner_create', ['uses' => 'Dn\DnController@banner_create']);
+Route::post('dn/banner_delete', ['uses' => 'Dn\DnController@banner_delete']);
 
 Route::get('dn/clock_main_class', ['uses' => 'Dn\DnController@clock_main_class']);
 Route::get('dn/clock_main_class_detail', 'Dn\DnController@clock_main_class_detail');
 Route::post('dn/clock_main_class_update', ['uses' => 'Dn\DnController@clock_main_class_update']);
 Route::post('dn/clock_main_class_create', ['uses' => 'Dn\DnController@clock_main_class_create']);
+Route::post('dn/clock_main_class_delete', ['uses' => 'Dn\DnController@clock_main_class_delete']);
 
 
 Route::get('dn/clock_class', ['uses' => 'Dn\DnController@clock_class']);
 Route::get('dn/clock_main_class_detail', 'Dn\DnController@clock_main_class_detail');
 Route::post('dn/clock_class_update', ['uses' => 'Dn\DnController@clock_class_update']);
 Route::post('dn/clock_class_create', ['uses' => 'Dn\DnController@clock_class_create']);
+Route::post('dn/clock_class_delete', ['uses' => 'Dn\DnController@clock_class_delete']);
 
 Route::get('dn/clock_records', ['uses' => 'Dn\DnController@clock_records']);

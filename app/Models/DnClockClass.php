@@ -20,7 +20,7 @@ class DnClockClass extends Model
     ];
 
     public $timestamps = FALSE;
-    protected $fillable = ['main_class_id','name','year','month'];
+    protected $fillable = ['main_class_id','name'];
     protected $appends = ['mainClass'];
     protected $hidden = [];
 

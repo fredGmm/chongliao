@@ -55,66 +55,13 @@ class DnController extends Controller
         return $this->jsonOk(['list' => $list, 'total' => $count]);
     }
 
-    public function create(Request $request)
-    {
-        $model = new Product($request->all());
-
-        if ($model->validate($request->all())) {
-            if (!$model->save()) {
-                throw new \RuntimeException("插入失败");
-            }
-            return $this->jsonOk($model, '添加成功');
-        } else {
-            $message = $model->errors[0] ?? '位置错误';
-            return $this->jsonErr([], '添加失败！' . $message);
-        }
-    }
-
-    public function detail(Request $request)
-    {
-        $id = $request->get('id', 0);
-        $model = Product::query()
-            ->where('id', $id)
-            ->where('is_deleted', 0)
-            ->with('relateDetail')
-            ->first();
-        if ($model == null) {
-            $message = "未找到此产品";
-            return $this->jsonErr(80000, $message);
-        } else {
-            return $this->jsonOk($model, '');
-        }
-    }
-
-    public function update(Request $request)
-    {
+    public function activity_delete(Request $request){
         $id = $request->get('id');
-        $model = Product::query()->where('id', $id)->with('relateDetail')->first();
-        if ($model == null) {
-            return $this->jsonErr([], '未找到此产品，id:' . $id);
-        }
-        $model->fill($request->all());
-        if (!$model->save()) {
-            throw new \RuntimeException("更新失败");
-        }
-
-        $detailModel = ProductDetail::query()->where('product_id', $id)
-            ->first();
-        if($detailModel) {
-            $detailModel->fill($request->all());
-            if (!$detailModel->save()) {
-                throw new \RuntimeException("更新失败");
-            }
-        }
-
-
-        return $this->jsonOk($model, '更新成功');
+        Activity::query()->where('id', $id)->delete();
+        return $this->jsonOk([], '删除成功');
     }
 
-    public function delete()
-    {
 
-    }
 
     public function article_list(Request $request){
         $page = $request->get('page', 1);
@@ -137,6 +84,11 @@ class DnController extends Controller
         return $this->jsonOk(['list' => $list, 'total' => $count]);
     }
 
+    public function article_delete(Request $request){
+        $id = $request->get('id');
+        Article::query()->where('id', $id)->delete();
+        return $this->jsonOk([], '删除成功');
+    }
     public function article_create(Request $request) {
         $model = new Article($request->all());
 
@@ -211,6 +163,11 @@ class DnController extends Controller
         return $this->jsonOk(['list' => $list, 'total' => $count]);
     }
 
+    public function user_delete(Request $request){
+        $id = $request->get('id');
+        DnUser::query()->where('id', $id)->delete();
+        return $this->jsonOk([], '删除成功');
+    }
     public function user_create(Request $request) {
         $model = new DnUser($request->all());
 
@@ -268,6 +225,13 @@ class DnController extends Controller
         return $this->jsonOk(['list' => $list, 'total' => $count]);
     }
 
+    public function community_delete(Request $request){
+        $id = $request->get('id');
+        DnUserCommunity::query()->where('id', $id)->delete();
+        return $this->jsonOk([], '删除成功');
+    }
+
+
     public function banner_update(Request $request)
     {
         $id = $request->get('id');
@@ -296,6 +260,12 @@ class DnController extends Controller
         $count = $query->count();
 
         return $this->jsonOk(['list' => $list, 'total' => $count]);
+    }
+
+    public function banner_delete(Request $request){
+        $id = $request->get('id');
+        DnBanner::query()->where('id', $id)->delete();
+        return $this->jsonOk([], '删除成功');
     }
 
     public function banner_create(Request $request)
@@ -342,6 +312,13 @@ class DnController extends Controller
         $count = $query->count();
 
         return $this->jsonOk(['list' => $list, 'total' => $count]);
+    }
+
+    public function clock_main_class_delete(Request $request){
+        $id = $request->get('id');
+        DnClockMainClass::query()->where('id', $id)->delete();
+        DnClockClass::query()->where('main_class_id', $id)->delete();
+        return $this->jsonOk([], '删除成功');
     }
 
     public function clock_main_class_detail(Request $request)
@@ -407,13 +384,20 @@ class DnController extends Controller
         return $this->jsonOk(['list' => $list, 'total' => $count, 'main_class_map' => $main_class_map]);
     }
 
+    public function clock_class_delete(Request $request){
+        $id = $request->get('id');
+        DnClockClass::query()->where('id', $id)->delete();
+        return $this->jsonOk([], '删除成功');
+    }
+
     public function clock_class_create(Request $request)
     {
 
         $model = new DnClockClass($request->all());
 
         if ($model->validate($request->all())){
-
+            $model->year = date('Y');
+            $model->month = date('m');
             if (!$model->save()) {
                 throw new \RuntimeException("插入失败");
             }
