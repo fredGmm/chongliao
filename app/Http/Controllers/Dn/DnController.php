@@ -440,4 +440,14 @@ class DnController extends Controller
     }
 
 
+    public function dashboard_panel(Request $request) {
+        $id = $request->get('id', 0);
+        $user_count = DnUser::query()
+            ->count();
+
+        $clock_count =  DnClockRecord::query()->count();
+        $org_count =  DnUser::query()->groupBy("class_id")->count();
+
+        return $this->jsonOk(['data' => ['line' => [],'user_count' => $user_count,'clock_count' => 200, 'community_count' => $clock_count, 'org_count' => $org_count]]);
+    }
 }

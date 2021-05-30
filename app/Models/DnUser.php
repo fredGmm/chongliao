@@ -24,7 +24,7 @@ class DnUser extends Model
     'province','city','area','user_level','community_level','community_id','class_id','love_count','love_gold_coin',
    'continuous_clock_count','update_count'
     ];
-//    protected $appends = ['className'];
+    protected $appends = ['refereeName'];
 //    protected $hidden = ['path'];
 
     public $errors;
@@ -44,6 +44,23 @@ class DnUser extends Model
 //            return $model->name ?? '';
 //        }
 //        return '';
+    }
+
+    public function getRefereeNameAttribute()
+    {
+        if($this->referee_id) {
+            $model = DnUser::query()->select(['nick_name'])
+                ->where('community_id',$this->referee_id)
+                ->first();
+            if($model) {
+                foreach ($model as $value) {
+                    $name_array[] = ($value->nick_name);
+                }
+            }
+
+            return $model->nick_name ?? '无';
+        }
+        return '无';
     }
 
 }

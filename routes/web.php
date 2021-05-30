@@ -132,3 +132,6 @@ Route::post('dn/clock_class_create', ['uses' => 'Dn\DnController@clock_class_cre
 Route::post('dn/clock_class_delete', ['uses' => 'Dn\DnController@clock_class_delete']);
 
 Route::get('dn/clock_records', ['uses' => 'Dn\DnController@clock_records']);
+
+
+Route::get('/dn/dashboard_panel', ['uses' => 'Dn\DnController@dashboard_panel']);
