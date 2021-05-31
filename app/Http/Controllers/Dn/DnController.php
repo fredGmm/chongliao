@@ -51,7 +51,7 @@ class DnController extends Controller
         }
         $list = $query->offset($offset)->limit($pageSize)->orderBy(ltrim($order, '-'), $desc)
             ->get();
-        $count = $query->count();
+        $count = Activity::query()->count();
 
         return $this->jsonOk(['list' => $list, 'total' => $count]);
     }
@@ -80,7 +80,7 @@ class DnController extends Controller
         }
         $list = $query->offset($offset)->limit($pageSize)->orderBy(ltrim($order, '-'), $desc)
             ->get();
-        $count = $query->count();
+        $count = Article::query()->count();
 
         return $this->jsonOk(['list' => $list, 'total' => $count]);
     }
@@ -160,7 +160,7 @@ class DnController extends Controller
         }
         $list = $query->offset($offset)->limit($pageSize)->orderBy(ltrim($order, '-'), $desc)
             ->get();
-        $count = $query->count();
+        $count = DnUser::query()->count();
 
         return $this->jsonOk(['list' => $list, 'total' => $count]);
     }
@@ -222,7 +222,7 @@ class DnController extends Controller
 
         $list = $query->offset($offset)->limit($pageSize)
             ->get();
-        $count = $query->count();
+        $count = DnUserCommunity::query()->count();
 
         return $this->jsonOk(['list' => $list, 'total' => $count]);
     }
@@ -259,7 +259,7 @@ class DnController extends Controller
 
         $list = $query->offset($offset)->limit($pageSize)
             ->get();
-        $count = $query->count();
+        $count =  DnBanner::query()->count();
 
         return $this->jsonOk(['list' => $list, 'total' => $count]);
     }
@@ -311,7 +311,7 @@ class DnController extends Controller
 
         $list = $query->offset($offset)->limit($pageSize)
             ->get();
-        $count = $query->count();
+        $count = DnClockMainClass::query()->count();
 
         return $this->jsonOk(['list' => $list, 'total' => $count]);
     }
@@ -379,7 +379,7 @@ class DnController extends Controller
 
         $list = $query->offset($offset)->limit($pageSize)
             ->get();
-        $count = $query->count();
+        $count = DnClockClass::query()->count();
 
         $main_class_map = DnClockMainClass::query()->get();
 //        var_dump($main_class_map);exit;
@@ -434,7 +434,7 @@ class DnController extends Controller
 
         $list = $query->offset($offset)->limit($pageSize)
             ->get();
-        $count = $query->count();
+        $count =  DnClockRecord::query()->count();
 
         $main_class_map = DnClockMainClass::query()->get();
 //        var_dump($main_class_map);exit;
@@ -463,7 +463,7 @@ class DnController extends Controller
 
         $list = $query->offset($offset)->limit($pageSize)
             ->get();
-        $count = $query->count();
+        $count =  DnArticleClass::query()->count();
 
         return $this->jsonOk(['list' => $list, 'total' => $count]);
     }
