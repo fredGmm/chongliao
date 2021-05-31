@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Activity;
 use App\Models\Article;
+use App\Models\DnArticleClass;
 use App\Models\DnBanner;
 use App\Models\DnClockClass;
 use App\Models\DnClockMainClass;
@@ -92,6 +93,7 @@ class DnController extends Controller
     public function article_create(Request $request) {
         $model = new Article($request->all());
 
+        $model->cover = $request->post('imageUrl');
         if ($model->validate($request->all())) {
             if (!$model->save()) {
                 throw new \RuntimeException("插入失败");
@@ -450,4 +452,57 @@ class DnController extends Controller
 
         return $this->jsonOk(['data' => ['line' => [],'user_count' => $user_count,'clock_count' => $clock_count, 'community_count' => $clock_count, 'org_count' => $org_count]]);
     }
+
+    public function article_class(Request $request) {
+        $page = $request->get('page', 1);
+        $pageSize = $request->get('pageSize', 10);
+        $offset = ($page - 1) * $pageSize;
+        //处理排序
+
+        $query = DnArticleClass::query();
+
+        $list = $query->offset($offset)->limit($pageSize)
+            ->get();
+        $count = $query->count();
+
+        return $this->jsonOk(['list' => $list, 'total' => $count]);
+    }
+
+    public function article_class_create(Request $request)
+    {
+
+        $model = new DnArticleClass($request->all());
+
+        if ($model->validate($request->all())){
+
+            if (!$model->save()) {
+                throw new \RuntimeException("插入失败");
+            }
+            return $this->jsonOk($model, '添加成功');
+        } else{
+            $message = $model->errors[0] ?? '位置错误';
+            return $this->jsonErr([], '添加失败！' . $message);
+        }
+    }
+
+    public function article_class_update(Request $request)
+    {
+        $id = $request->get('id');
+        $model = DnArticleClass::query()->where('id', $id)->first();
+        if ($model == null) {
+            return $this->jsonErr([], '未找到此用户，id:' . $id);
+        }
+        $model->fill($request->all());
+        if (!$model->save()) {
+            throw new \RuntimeException("更新失败");
+        }
+        return $this->jsonOk($model, '更新成功');
+    }
+
+    public function article_class_delete(Request $request){
+        $id = $request->get('id');
+        DnArticleClass::query()->where('id', $id)->delete();
+        return $this->jsonOk([], '删除成功');
+    }
+
 }

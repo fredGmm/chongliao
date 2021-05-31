@@ -52,12 +52,6 @@ class DnUser extends Model
             $model = DnUser::query()->select(['nick_name'])
                 ->where('community_id',$this->referee_id)
                 ->first();
-            if($model) {
-                foreach ($model as $value) {
-                    $name_array[] = ($value->nick_name);
-                }
-            }
-
             return $model->nick_name ?? '无';
         }
         return '无';

@@ -135,3 +135,9 @@ Route::get('dn/clock_records', ['uses' => 'Dn\DnController@clock_records']);
 
 
 Route::get('/dn/dashboard_panel', ['uses' => 'Dn\DnController@dashboard_panel']);
+
+
+Route::get('dn/article_class', ['uses' => 'Dn\DnController@article_class']);
+Route::post('dn/article_class_create', ['uses' => 'Dn\DnController@article_class_create']);
+Route::post('dn/article_class_update', ['uses' => 'Dn\DnController@article_class_update']);
+Route::post('dn/article_class_delete', ['uses' => 'Dn\DnController@article_class_delete']);

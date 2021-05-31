@@ -43,4 +43,11 @@ class Article extends Model
         return '';
     }
 
+    public function setCoverAttribute($value)
+    {
+        $this->attributes['cover'] = config('app.asset_url') .'static/' .$value;;
+    }
+
+
+
 }
