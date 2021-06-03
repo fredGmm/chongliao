@@ -126,10 +126,16 @@ Route::post('dn/clock_main_class_delete', ['uses' => 'Dn\DnController@clock_main
 
 
 Route::get('dn/clock_class', ['uses' => 'Dn\DnController@clock_class']);
-Route::get('dn/clock_main_class_detail', 'Dn\DnController@clock_main_class_detail');
+Route::get('dn/clock_class_detail', 'Dn\DnController@clock_class_detail');
 Route::post('dn/clock_class_update', ['uses' => 'Dn\DnController@clock_class_update']);
 Route::post('dn/clock_class_create', ['uses' => 'Dn\DnController@clock_class_create']);
 Route::post('dn/clock_class_delete', ['uses' => 'Dn\DnController@clock_class_delete']);
+
+Route::get('dn/clock_three_class', ['uses' => 'Dn\DnController@clock_three_class']);
+Route::get('dn/clock_three_class_detail', 'Dn\DnController@clock_three_class_detail');
+Route::post('dn/clock_three_class_update', ['uses' => 'Dn\DnController@clock_three_class_update']);
+Route::post('dn/clock_three_class_create', ['uses' => 'Dn\DnController@clock_three_class_create']);
+Route::post('dn/clock_three_class_delete', ['uses' => 'Dn\DnController@clock_three_class_delete']);
 
 Route::get('dn/clock_records', ['uses' => 'Dn\DnController@clock_records']);
 

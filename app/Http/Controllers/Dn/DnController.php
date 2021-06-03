@@ -12,6 +12,7 @@ use App\Models\DnClockClass;
 use App\Models\DnClockMainClass;
 use App\Models\DnClockRecord;
 use App\Models\DnClockRecordClass;
+use App\Models\DnClockThreeClass;
 use App\Models\DnUser;
 use App\Models\DnUserCommunity;
 use Illuminate\Http\Request;
@@ -423,6 +424,63 @@ class DnController extends Controller
         }
         return $this->jsonOk($model, '更新成功');
     }
+
+
+    public function clock_three_class(Request $request) {
+        $page = $request->get('page', 1);
+        $pageSize = $request->get('pageSize', 10);
+        $offset = ($page - 1) * $pageSize;
+        //处理排序
+
+        $query = DnClockThreeClass::query();
+
+        $list = $query->offset($offset)->limit($pageSize)
+            ->get();
+        $count = DnClockThreeClass::query()->count();
+
+        $class_map = DnClockClass::query()->get();
+
+        return $this->jsonOk(['list' => $list, 'total' => $count, 'class_map' => $class_map]);
+    }
+
+    public function clock_three_class_delete(Request $request){
+        $id = $request->get('id');
+        DnClockThreeClass::query()->where('id', $id)->delete();
+        return $this->jsonOk([], '删除成功');
+    }
+
+    public function clock_three_class_create(Request $request)
+    {
+
+        $model = new DnClockThreeClass($request->all());
+
+        if ($model->validate($request->all())){
+            $model->year = date('Y');
+            $model->month = date('m');
+            if (!$model->save()) {
+                throw new \RuntimeException("插入失败");
+            }
+            return $this->jsonOk($model, '添加成功');
+        } else{
+            $message = $model->errors[0] ?? '位置错误';
+            return $this->jsonErr([], '添加失败！' . $message);
+        }
+    }
+
+    public function clock_three_class_update(Request $request)
+    {
+        $id = $request->get('id');
+        $model = DnClockThreeClass::query()->where('id', $id)->first();
+        if ($model == null) {
+            return $this->jsonErr([], '未找到此用户，id:' . $id);
+        }
+        $model->fill($request->all());
+        if (!$model->save()) {
+            throw new \RuntimeException("更新失败");
+        }
+        return $this->jsonOk($model, '更新成功');
+    }
+
 
     public function clock_records(Request $request) {
         $page = $request->get('page', 1);

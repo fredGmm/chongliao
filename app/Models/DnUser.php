@@ -20,9 +20,9 @@ class DnUser extends Model
     ];
 
     public $timestamps = FALSE;
-    protected $fillable = ['real_name','nick_name','phone','password','id_card','certificated','sex','mail',
-    'province','city','area','user_level','community_level','community_id','class_id','love_count','love_gold_coin',
-   'continuous_clock_count','update_count'
+    protected $fillable = ['real_name', 'nick_name', 'phone', 'password', 'id_card', 'certificated', 'sex', 'mail',
+        'province', 'city', 'area', 'user_level', 'community_level', 'community_id', 'class_id', 'love_count', 'love_gold_coin',
+        'continuous_clock_count', 'update_count'
     ];
     protected $appends = ['refereeName'];
 //    protected $hidden = ['path'];
@@ -32,6 +32,11 @@ class DnUser extends Model
     public function validate($data)
     {
         return true;
+    }
+
+    public function setIdCardAttribute($value)
+    {
+        $this->id_card = $value ?? '0';
     }
 
     public function getClassNameAttribute()
@@ -48,9 +53,9 @@ class DnUser extends Model
 
     public function getRefereeNameAttribute()
     {
-        if($this->referee_id) {
+        if ($this->referee_id) {
             $model = DnUser::query()->select(['nick_name'])
-                ->where('community_id',$this->referee_id)
+                ->where('community_id', $this->referee_id)
                 ->first();
             return $model->nick_name ?? '无';
         }
