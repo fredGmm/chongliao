@@ -14,6 +14,7 @@ use App\Models\DnClockRecord;
 use App\Models\DnClockRecordClass;
 use App\Models\DnClockThreeClass;
 use App\Models\DnUser;
+use App\Models\DnUserClass;
 use App\Models\DnUserCommunity;
 use Illuminate\Http\Request;
 
@@ -213,6 +214,75 @@ class DnController extends Controller
         return $this->jsonOk($model, '更新成功');
     }
 
+
+    public function user_class_list(Request $request){
+        $page = $request->get('page', 1);
+        $pageSize = $request->get('pageSize', 10);
+        $offset = ($page - 1) * $pageSize;
+        //处理排序
+        $order = $request->get('sort', '-create_time');
+        $desc = strrpos('-', $order) === false ? 'asc' : 'desc';
+
+        //筛选
+        $type = $request->get('type', '');
+        $query = DnUserClass::query();
+        if ($type) {
+            $query->where('type', $type);
+        }
+        $list = $query->offset($offset)->limit($pageSize)->orderBy(ltrim($order, '-'), $desc)
+            ->get();
+        $count = DnUserClass::query()->count();
+
+        return $this->jsonOk(['list' => $list, 'total' => $count]);
+    }
+
+    public function user_class_delete(Request $request){
+        $id = $request->get('id');
+        DnUserClass::query()->where('id', $id)->delete();
+        return $this->jsonOk([], '删除成功');
+    }
+    public function user_class_create(Request $request) {
+        $model = new DnUserClass($request->all());
+
+        if ($model->validate($request->all())) {
+            if (!$model->save()) {
+                throw new \RuntimeException("插入失败");
+            }
+            return $this->jsonOk($model, '添加成功');
+        } else {
+            $message = $model->errors[0] ?? '位置错误';
+            return $this->jsonErr([], '添加失败！' . $message);
+        }
+    }
+
+    public function user_class_detail(Request $request)
+    {
+        $id = $request->get('id', 0);
+        $model = DnUserClass::query()
+            ->where('id', $id)
+            ->first();
+        if ($model == null) {
+            $message = "未找到此文章";
+            return $this->jsonErr(80000, $message);
+        } else {
+            return $this->jsonOk($model, '');
+        }
+    }
+
+    public function user_class_update(Request $request)
+    {
+        $id = $request->get('id');
+        $model = DnUserClass::query()->where('id', $id)->first();
+        if ($model == null) {
+            return $this->jsonErr([], '未找到此用户，id:' . $id);
+        }
+        $model->fill($request->all());
+        if (!$model->save()) {
+            throw new \RuntimeException("更新失败");
+        }
+        return $this->jsonOk($model, '更新成功');
+    }
+
     public function community_list(Request $request) {
         $page = $request->get('page', 1);
         $pageSize = $request->get('pageSize', 10);
@@ -225,8 +295,38 @@ class DnController extends Controller
             ->get();
         $count = DnUserCommunity::query()->count();
 
-        return $this->jsonOk(['list' => $list, 'total' => $count]);
+        $class_id = DnUserClass::query()->get();
+        return $this->jsonOk(['list' => $list, 'total' => $count, 'class_data' => $class_id]);
     }
+
+    public function community_create(Request $request) {
+        $model = new DnUserCommunity($request->all());
+
+        if ($model->validate($request->all())) {
+            if (!$model->save()) {
+                throw new \RuntimeException("插入失败");
+            }
+            return $this->jsonOk($model, '添加成功');
+        } else {
+            $message = $model->errors[0] ?? '位置错误';
+            return $this->jsonErr([], '添加失败！' . $message);
+        }
+    }
+
+    public function community_update(Request $request)
+    {
+        $id = $request->get('id');
+        $model = DnUserCommunity::query()->where('id', $id)->first();
+        if ($model == null) {
+            return $this->jsonErr([], '未找到此社区，id:' . $id);
+        }
+        $model->fill($request->all());
+        if (!$model->save()) {
+            throw new \RuntimeException("更新失败");
+        }
+        return $this->jsonOk($model, '更新成功');
+    }
+
 
     public function community_delete(Request $request){
         $id = $request->get('id');
@@ -243,7 +343,7 @@ class DnController extends Controller
             return $this->jsonErr([], '未找到此用户，id:' . $id);
         }
         $model->fill($request->all());
-        $model->photo = $request->imageUrl;
+        $model->photo = config('app.asset_url') .'/static/' .$request->imageUrl;
         if (!$model->save()) {
             throw new \RuntimeException("更新失败");
         }
@@ -488,11 +588,28 @@ class DnController extends Controller
         $offset = ($page - 1) * $pageSize;
         //处理排序
 
-        $query = DnClockRecord::query();
+        $service_phone = $request->get('service_phone', 0);
+        $user_ids = [];
+        if($service_phone) {
+            $users = DnUser::query()->where('phone', 'like', '%'.$service_phone.'%')
+                ->get(['id'])->toArray();
+            $user_ids = array_column($users,'id');
+        }
 
-        $list = $query->offset($offset)->limit($pageSize)
-            ->get();
-        $count =  DnClockRecord::query()->count();
+
+        $query = DnClockRecord::query();
+        if($user_ids) {
+            $list = $query->where('user_id',$user_ids)->offset($offset)->limit($pageSize)
+                ->get();
+            $count =  DnClockRecord::query()->where('user_id',$user_ids)->count();
+        }else{
+
+            $list = $query->offset($offset)->limit($pageSize)
+                ->get();
+            $count =  DnClockRecord::query()->count();
+
+        }
+
 
         $main_class_map = DnClockMainClass::query()->get();
 //        var_dump($main_class_map);exit;
@@ -523,7 +640,10 @@ class DnController extends Controller
             ->get();
         $count =  DnArticleClass::query()->count();
 
-        return $this->jsonOk(['list' => $list, 'total' => $count]);
+        $list = $list->toArray();
+        $list[] = ['id' => 0,'name' => '咨询','zt'=>0];
+        return $this->jsonOk(['list' =>  $list, 'total' => $count]);
+
     }
 
     public function article_class_create(Request $request)

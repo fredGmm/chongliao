@@ -108,8 +108,16 @@ Route::post('dn/user_delete', ['uses' => 'Dn\DnController@user_delete']);
 Route::get('dn/user_detail', 'Dn\DnController@user_detail');
 Route::put('dn/user_update', ['uses' => 'Dn\DnController@user_update']);
 
+Route::get('dn/user_class', ['uses' => 'Dn\DnController@user_class_list']);
+Route::post('dn/user_class_create', ['uses' => 'Dn\DnController@user_class_create']);
+Route::post('dn/user_class_delete', ['uses' => 'Dn\DnController@user_class_delete']);
+Route::post('dn/user_class_detail', 'Dn\DnController@user_class_detail');
+Route::post('dn/user_class_update', ['uses' => 'Dn\DnController@user_class_update']);
+
 Route::get('dn/user_community', ['uses' => 'Dn\DnController@community_list']);
-Route::post('dn/user_community_delete', ['uses' => 'Dn\DnController@community_delete']);
+Route::post('dn/community_create', ['uses' => 'Dn\DnController@community_create']);
+Route::post('dn/community_update', ['uses' => 'Dn\DnController@community_update']);
+Route::post('dn/community_delete', ['uses' => 'Dn\DnController@community_delete']);
 
 
 Route::get('dn/banner_detail', 'Dn\DnController@banner_detail');

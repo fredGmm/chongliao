@@ -20,7 +20,7 @@ class DnUserCommunity extends Model
     ];
 
     public $timestamps = FALSE;
-    protected $fillable = [];
+    protected $fillable = ['class_id','name'];
     protected $appends = ['community_user'];
 //    protected $hidden = ['path'];
 
