@@ -343,7 +343,7 @@ class DnController extends Controller
             return $this->jsonErr([], '未找到此用户，id:' . $id);
         }
         $model->fill($request->all());
-        $model->photo = config('app.asset_url') .'/static/' .$request->imageUrl;
+        $model->photo = config('app.asset_url')  .$request->imageUrl;
         if (!$model->save()) {
             throw new \RuntimeException("更新失败");
         }
@@ -377,7 +377,7 @@ class DnController extends Controller
         $model = new DnBanner($request->all());
 
         if ($model->validate($request->all())){
-            $model->photo = config('app.asset_url') .'/static/' .$request->imageUrl;
+            $model->photo = config('app.asset_url')  .$request->imageUrl;
             if (!$model->save()) {
                 throw new \RuntimeException("插入失败");
             }
