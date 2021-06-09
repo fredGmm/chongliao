@@ -21,7 +21,7 @@ class DnClockRecord extends Model
 
     public $timestamps = FALSE;
     protected $fillable = [];
-    protected $appends = ['mainClassName','className','communityName','userName'];
+    protected $appends = ['mainClassName','className','communityName','userName','userPhone'];
     protected $hidden = [];
 
     public $errors;
@@ -48,6 +48,16 @@ class DnClockRecord extends Model
 
         return $model->real_name ?? '未知';
     }
+
+    public function getUserPhoneAttribute()
+    {
+        $model = DnUser::query()
+            ->where('id', $this->main_class_id)
+            ->first();
+
+        return $model->phone ?? '未知';
+    }
+
     public function getMainClassNameAttribute()
     {
         $model = DnClockMainClass::query()
