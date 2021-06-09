@@ -40,9 +40,14 @@ class DnBanner extends Model
         return true;
     }
 
-//    public function setPathAttribute()
-//    {
-//    }
+    public function setPhotoAttribute($value)
+    {
+        if(strrpos($value, "http") === false) {
+            $this->attributes['photo'] = config('app.asset_url')  . $value;
+        }else{
+            $this->attributes['photo'] = $value;
+        }
+    }
 
    public function getPhotoUrlAttribute(){
         return config('app.asset_url') . $this->photo;
