@@ -12,7 +12,7 @@
         "doctrine/dbal": " ~2.3",
         "fideloper/proxy": "^4.0",
         "johnlui/aliyun-oss": "~2.0",
-        "laravel/framework": "5.7.*",
+        "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "phpoffice/phpspreadsheet": "^1.10",
         "predis/predis": "^1.1"
